@@ -7,10 +7,10 @@ const DotComponent = () => {
             height: 30,
             backgroundColor: 'white',
             position: 'absolute',
-            top: 50,
+            top: 80,
             left: Dimensions.get('window').width / 2 - 15,
             borderRadius: 1000,
-            zIndex: 0
+            zIndex: 1
         }}>
         </View>
     );

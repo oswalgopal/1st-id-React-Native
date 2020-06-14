@@ -23,6 +23,10 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "android": {
+      "package": "com.notespedia.notespedia",
+      "versionCode": 1
+    },
   }
 }
