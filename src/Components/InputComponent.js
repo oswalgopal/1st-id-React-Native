@@ -5,7 +5,7 @@ const InputComponent = props => {
         <TextInput
             style={{
                 height: 40,
-                width: '85%',
+                width: '80%',
                 borderColor: 'gray',
                 backgroundColor: '#fff',
                 borderRadius: 5,

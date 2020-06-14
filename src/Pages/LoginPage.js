@@ -26,12 +26,12 @@ const LoginPage = () => {
                 source={
                     Dimensions.get('screen').height > 800 ?
                         require('../images/background-ellipse.png') :
-                        require('../images/background-ellipse4.png')
+                        require('../images/background-ellipse5.png')
                 }
                 width={'100%'}
                 height={Dimensions.get('screen').height > 800 ?
-                    Dimensions.get('screen').height / 1.2:
-                    Dimensions.get('screen').height
+                    Dimensions.get('screen').height / 1.2 :
+                    Dimensions.get('screen').height/1.2
                 }
             />
             {/*<ImageBackground source={require('../images/background-ellipse.png')} style={{
