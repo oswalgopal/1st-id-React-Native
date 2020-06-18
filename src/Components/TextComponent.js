@@ -5,9 +5,11 @@ const TextComponent = props => {
         <Text style={{
             fontSize: props.fontSize,
             color: props.color,
-            padding: props.padding
+            padding: props.padding ,
+            textAlign: 'center',
+            fontWeight : props.fontWeight
         }}>
-            {props.text}
+            {props.text} 
         </Text>
     );
 };

@@ -1,10 +1,13 @@
 import React from 'react';
-import {View, ImageBackground, SafeAreaView, Dimensions, StatusBar, Image} from 'react-native';
+import {View, ImageBackground, SafeAreaView, Dimensions, StatusBar,Text, Image} from 'react-native';
 import DotComponent from '../Components/DotComponent';
+import ImageComponent from '../Components/ImageComponent';
 import TextComponent from '../Components/TextComponent';
 import InputComponent from '../Components/InputComponent';
 import ButtonComponent from '../Components/ButtonComponent';
-const LoginPage = () => {
+import ThreadComponent from '../Components/ThreadComponent';
+
+const LoginPage = (props) => {
     const[username, setUsername] = React.useState('');
     const[password, setPassword] = React.useState('');
     React.useEffect(() => {
@@ -18,22 +21,7 @@ const LoginPage = () => {
             justifyContent: 'center',
             padding: 0
         }}>
-            <Image
-                style={{
-                    position: "absolute",
-                    top: 50,
-                }}
-                source={
-                    Dimensions.get('screen').height > 800 ?
-                        require('../images/background-ellipse.png') :
-                        require('../images/background-ellipse5.png')
-                }
-                width={'100%'}
-                height={Dimensions.get('screen').height > 800 ?
-                    Dimensions.get('screen').height / 1.2 :
-                    Dimensions.get('screen').height/1.2
-                }
-            />
+            <ImageComponent />
             {/*<ImageBackground source={require('../images/background-ellipse.png')} style={{
                 flex: 1,
                 width: '100%',
@@ -43,33 +31,28 @@ const LoginPage = () => {
                 justifyContent: 'center',
             }}>*/}
                 <DotComponent />
-            <View style={{
-                width: 5,
-                height: 80 + 15,
-                backgroundColor: 'black',
-                position: 'absolute',
-                top: 0,
-                zIndex: 2
-            }}/>
+                <ThreadComponent />
                 <TextComponent
                     text={'Login'}
                     color={'#fff'}
                     fontSize={50}
                     padding={20}
+                    fontWeight={'bold'}
                 />
                 <InputComponent
-                    username={username}
+                    field={username}
                     placeholder={'username'}
                     onChangeTextFunction={setUsername}
                 />
                 <InputComponent
-                    username={password}
+                    field={password}
                     placeholder={'password'}
                     onChangeTextFunction={setPassword}
+                    secureTextEntry = {true}
                 />
-                <ButtonComponent title={'Login'} marginTop={30} marginBottom={10} onPress={() => {}}/>
-                <ButtonComponent title={'SignUp'} marginTop={0} marginBottom={10} onPress={() => {}}/>
-                <TextComponent text={'forgot password ?'}/>
+                <ButtonComponent title={'Login'} marginTop={30} marginBottom={10} onPress={() => {props.navigation.navigate('landingPage')}}/>
+                <ButtonComponent title={'SignUp'} marginTop={0} marginBottom={10} onPress={() => {props.navigation.navigate('register')}}/>
+                 <Text onPress={() => {props.navigation.navigate('forgotPassword')}} >Forgot Password ?</Text>
             {/*</ImageBackground>*/}
         </SafeAreaView>
     );

@@ -1,6 +1,6 @@
 import React  from 'react';
 import {View, Dimensions,Keyboard} from 'react-native';
-const DotComponent = () => {
+const ThreadComponent = () => {
     const [isKeyboardVisible, setKeyboardVisible] =React.useState(false);
 
  React.useEffect(() => {
@@ -22,19 +22,19 @@ const DotComponent = () => {
       keyboardDidShowListener.remove();
     };
   }, []);
-    return (
-        <View style={{
-            width: 30,
-            height: 30,
-            backgroundColor: 'white',
-            position: 'absolute',
-            top: isKeyboardVisible ? 10 : 110 ,
-            left: Dimensions.get('window').width / 2 - 15,
-            borderRadius: 1000,
-            zIndex: 1
-        }}>
-        </View>
-    );
-};
 
-export default DotComponent;
+return (
+<View style={{
+                width: 5,
+                height: isKeyboardVisible ? 25 : 125  ,
+                backgroundColor: 'black',
+                position: 'absolute',
+                top: 0,
+                zIndex: 2
+            }}/>
+
+);
+}
+export default ThreadComponent ;
+
+

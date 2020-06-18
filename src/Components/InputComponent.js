@@ -5,7 +5,7 @@ const InputComponent = props => {
         <TextInput
             style={{
                 height: 40,
-                width: '80%',
+                width: '70%',
                 borderColor: 'gray',
                 backgroundColor: '#fff',
                 borderRadius: 5,
@@ -16,7 +16,8 @@ const InputComponent = props => {
             placeholder={props.placeholder}
             placeholderTextColor={'#000000'}
             onChangeText={ev => props.onChangeTextFunction(ev)}
-            value={props.username}
+            secureTextEntry={props.secureTextEntry}
+            value={props.field}
         />
     );
 };
