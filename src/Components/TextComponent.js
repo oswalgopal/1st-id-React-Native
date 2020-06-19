@@ -7,7 +7,8 @@ const TextComponent = props => {
             color: props.color,
             padding: props.padding ,
             textAlign: 'center',
-            fontWeight : props.fontWeight
+            fontWeight : props.fontWeight,
+            marginTop : props.marginTop ,
         }}>
             {props.text} 
         </Text>

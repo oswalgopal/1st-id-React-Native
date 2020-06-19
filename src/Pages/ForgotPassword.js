@@ -30,13 +30,13 @@ const ForgotPassword2 = (props) => {
                     fontWeight = {'bold'}
                     // padding={15}
                 />
-                {<TextComponent
+                <TextComponent
                     text={'Please verify your account by entering the OTP sent to your registered Gmail Id.'}
                     color={'#fff'}
                     fontSize={20}
                     padding={20}
                 />
-            }        
+                    
                 {/* <Text style={{color:'#fff' , fontSize:20 ,padding:20, textAlign:'center'}}>Please verify your account by entering the OTP sent to your registered Gmail Id.</Text> */}
                 <InputComponent
                     field={OTP}

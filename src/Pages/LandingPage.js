@@ -1,7 +1,12 @@
 import React from 'react';
-import {View, ImageBackground, SafeAreaView, Dimensions, StatusBar, FlatList,Image,Text,StyleSheet} from 'react-native';
+import {View, ImageBackground,TouchableHighlight, SafeAreaView, Dimensions, StatusBar, FlatList,Image,Text,StyleSheet,Modal} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SearchComponent from '../Components/SearchComponent' ;
+import AddDocumentModal from '../Components/AddDocumentModal';
+import GrantAccessModal from '../Components/GrantAccessModal';
+import DotComponent from '../Components/DotComponent';
+import ImageComponent from '../Components/ImageComponent';
+import ThreadComponent from '../Components/ThreadComponent';
 
 
 const LandingPage = () => {
@@ -15,6 +20,8 @@ const data = [
 ];
 const numColumns = 2 ;
 const size = Dimensions.get('window').width/numColumns;
+const[modalVisible,setModalVisible] = React.useState({open:false,type:''});
+const [grantAccessDetail ,setGrantAccessDetail ] = React.useState({document:'',owner:''});
 const styles = StyleSheet.create({
   itemContainer: {
     width: size,
@@ -44,18 +51,53 @@ return(
      <FlatList
       data={data}
       renderItem={({item}) => (
+     <TouchableHighlight onPress={() => { 
+       if(item.accessType === 'P'){
+       setModalVisible({open:true,type:'grant'})
+       setGrantAccessDetail({document:item.value,owner:item.owner})
+       }
+       }
+       }>
         <View style={styles.itemContainer}>
+       
         <View style={styles.item}>
           <Image source={require('../images/pdf.png')} style={{ width:100 , height: 120, left:40}} />
-           <Text style={{padding:5}}>{item.value}</Text>
-            <Text style={{left:5}}>By:- {item.owner}</Text>
-          <Icon name={item.accessType === 'P' ? 'lock' : 'eye'} size={20} style={{left:140 , bottom:20}}/>
+           <Text style={{marginLeft:5,marginTop:10 , fontWeight:'bold'}}>{item.value}</Text>
+            <Text style={{left:5 , fontSize:10}}>By:- {item.owner}</Text>
+          <Icon name={item.accessType === 'P' ? 'lock' : 'eye'} size={25} style={{left:140, bottom:30}}/>
         </View>
         </View>
+      </TouchableHighlight>
+       
       )}
       keyExtractor={item => item.id}
       numColumns={numColumns} />
-     <Icon name="plus-circle" size={60} style={styles.add} />
+     <Icon name="plus-circle" size={60} style={styles.add} onPress={() => {setModalVisible({open:true,type:'add'})} } />
+     <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible.open}
+        onRequestClose={() => {
+          setModalVisible({open:false ,type: ''})
+        }}
+      >
+      <View style={{
+        position: 'absolute' ,
+        top:0 ,
+        left: 0 ,
+        flex: 1 ,
+        width: '100%' ,
+        height: '100%' ,
+        backgroundColor: 'rgba(255,255,255,0.7)'
+      }}/>
+      <DotComponent/>
+      <ThreadComponent />
+      <ImageComponent />
+      {
+        modalVisible.type === 'add' ? <AddDocumentModal /> : <GrantAccessModal DocumentDetail={grantAccessDetail} />
+      }
+      </Modal>
+ 
     </SafeAreaView>
 );
 }

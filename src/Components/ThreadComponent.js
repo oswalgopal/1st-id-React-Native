@@ -30,6 +30,7 @@ return (
                 backgroundColor: 'black',
                 position: 'absolute',
                 top: 0,
+                left: Dimensions.get('screen').width / 2 - 2.5 ,
                 zIndex: 2
             }}/>
 

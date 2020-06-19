@@ -41,7 +41,7 @@ const RegisterPage = (props) => {
                 />
                  <InputComponent
                     field={emailId}
-                    placeholder={'emailId'}
+                    placeholder={'Email Id'}
                     onChangeTextFunction={setemailId}
                     secureTextEntry={false}
                 />

@@ -11,13 +11,13 @@ const InputComponent = props => {
                 borderRadius: 5,
                 marginTop: 10,
                 paddingLeft: 10,
-                marginBottom:10
             }}
             placeholder={props.placeholder}
             placeholderTextColor={'#000000'}
             onChangeText={ev => props.onChangeTextFunction(ev)}
             secureTextEntry={props.secureTextEntry}
             value={props.field}
+            editable={props.editable}
         />
     );
 };
