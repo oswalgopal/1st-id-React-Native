@@ -6,10 +6,12 @@ import TextComponent from '../Components/TextComponent';
 import InputComponent from '../Components/InputComponent';
 import ButtonComponent from '../Components/ButtonComponent';
 import ThreadComponent from '../Components/ThreadComponent';
-
+import {AuthContext} from '../context/authContext';
 const LoginPage = (props) => {
     const[username, setUsername] = React.useState('');
     const[password, setPassword] = React.useState('');
+    const {login} = React.useContext(AuthContext);
+
     React.useEffect(() => {
         // window.alert(Dimensions.get('screen').height);
     }, [])
@@ -50,9 +52,9 @@ const LoginPage = (props) => {
                     onChangeTextFunction={setPassword}
                     secureTextEntry = {true}
                 />
-                <ButtonComponent title={'Login'} marginTop={30} marginBottom={10} onPress={() => {props.navigation.navigate('landingPage')}}/>
+                <ButtonComponent title={'Login'} marginTop={30} marginBottom={10} onPress={() => {login()}}/>
                 <ButtonComponent title={'SignUp'} marginTop={0} marginBottom={10} onPress={() => {props.navigation.navigate('register')}}/>
-                 <Text onPress={() => {props.navigation.navigate('forgotPassword')}} >Forgot Password ?</Text>
+                <Text onPress={() => {props.navigation.navigate('forgotPassword')}} >Forgot Password ?</Text>
             {/*</ImageBackground>*/}
         </SafeAreaView>
     );

@@ -1,8 +1,9 @@
 import React,{useEffect,useState} from 'react';
 import {View, Dimensions,Image,Keyboard} from 'react-native';
+import {useTheme} from '@react-navigation/native';
 const ImageComponent = () => {
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-
+    const theme = useTheme() ;
  useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -31,8 +32,8 @@ const ImageComponent = () => {
                 }}
                 source={
                     Dimensions.get('screen').height > 800 ?
-                        require('../images/background-ellipse.png') :
-                        require('../images/background-ellipse5.png')
+                        (theme.dark ? require('../images/dark-ellipse.png') : require('../images/background-ellipse.png')) :
+                        (theme.dark ? require('../images/dark-ellipse5.png') : require('../images/background-ellipse5.png'))
                 }
                 width={'100%'}
                 height={Dimensions.get('screen').height > 800 ?

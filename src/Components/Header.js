@@ -1,15 +1,17 @@
 import React from 'react';
-import {StyleSheet , Text , View} from 'react-native';
+import {StyleSheet , Text , View ,TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
-
+import {DrawerContentScrollView,DrawerItem} from '@react-navigation/drawer';
 const Header = (props) => {
    return(
        <View style={styles.header}>
-         <Icon name="user" size={30} color="#fff" style={styles.icon2} onPress={() => {props.navigation.navigate('notifications')}}/>
-         <Icon name={props.bellShown && 'bell' } size={25} color="#fff" style={styles.icon3} onPress={() => {props.navigation.navigate('notifications')}} />
-        <Icon name="bars" size={25} color="#fff" style={styles.icon1} />
-       </View>
+        <TouchableOpacity onPress={() =>{props.navigation.openDrawer()}}><Icon name="bars" size={25} color="#fff" style={{left:10}} /></TouchableOpacity>
+
+       <View style={styles.headerRight}>
+        <TouchableOpacity onPress={() => {props.navigation.navigate('notifications')}}><Icon name={props.bellShown && 'bell' } size={25} color="#fff" style={styles.icon3}/></TouchableOpacity>
+       <TouchableOpacity onPress={() =>{props.navigation.navigate('notifications')}}><Icon name="user" size={30} color="#fff" style={styles.icon2}/></TouchableOpacity>
+        </View>
+        </View>
    ); 
 }
 const styles = StyleSheet.create({
@@ -18,20 +20,15 @@ const styles = StyleSheet.create({
         height: 80,
         flexDirection: 'row',
         backgroundColor: '#0080FE',
-        alignItems: 'center',
-        justifyContent : 'center',
+        alignItems : 'center',
+        justifyContent: 'space-between'
     } ,
-    icon1: {
-        position: 'absolute',
-        left: 10
-    },
-    icon2: {
-        position: 'absolute',
-        right: 10
-    },
-    icon3: {
-        position: 'absolute',
-        right: 50
+    headerRight: {
+        justifyContent: 'space-evenly',
+        width: 90 ,
+        height: 80 ,
+        alignItems: 'center',
+        flexDirection:'row'
     }
 })
 export default Header ;

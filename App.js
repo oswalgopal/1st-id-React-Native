@@ -1,67 +1,60 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import LoginPage from './src/Pages/LoginPage';
-import RegisterPage from './src/Pages/RegisterPage';
-import ForgotPassword from './src/Pages/ForgotPassword';
-import ForgotPassword2 from './src/Pages/ForgotPassword2';
-import LandingPage from './src/Pages/LandingPage';
-import Notifications from './src/Pages/Notifications';
-import Header from './src/Components/Header';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-const Stack = createStackNavigator();
+import {NavigationContainer} from '@react-navigation/native';
+import UnAuthScreen from './src/Navigations/unAuthNavigation';
+import AuthScreen from './src/Navigations/AuthNavigation';
+import {darkTheme} from './src/Theme/darkTheme';
+import {lightTheme} from './src/Theme/lightTheme';
+import {useEffect} from 'react';
+import {AuthContext} from './src/context/authContext';
 const App = () => {
-    const user = <Icon name="user" size={30} color="#fff" />;
-    return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen
-                    options={{
-                        headerShown: false
-                    }}
-                    name="login"
-                    component={LoginPage}
-                />
-                <Stack.Screen
-                    options={{
-                        headerShown: false
-                    }}
-                    name="register"
-                    component={RegisterPage}
-                />
-                 <Stack.Screen
-                    options={({navigation}) => ({
-                        header: () => <Header navigation={navigation} bellShown={true} />
-                    })}
-                    name="landingPage"
-                    component={LandingPage}
-                />
-                <Stack.Screen
-                    options={({navigation}) => ({
-                        header: () => <Header navigation={navigation} bellShown={false} />
-                    })}
-
-                    name="notifications"
-                    component={Notifications}
-                />
-                <Stack.Screen
-                    options={{
-                        headerShown: false
-                    }}
-                    name="forgotPassword"
-                    component={ForgotPassword}
-                />
-                <Stack.Screen
-                    options={{
-                        headerShown: false
-                    }}
-                    name="forgotPassword2"
-                    component={ForgotPassword2}
-                />
-            </Stack.Navigator>
-        </NavigationContainer>
-    )
+const initialStateLoading = {
+    isloading: true,
+    isLoggedIn: false ,
+  };
+const [darkMode, setDarkMode] = React.useState(false);  
+const loginReducer = (prevState, action) => {
+    switch (action.type) {
+      case 'LOGIN':
+        return {
+          ...prevState,
+          isLoggedIn: true,
+          isloading: false,
+        };
+      case 'LOGOUT':
+        return {
+          ...prevState,
+          isLoggedIn: false,
+          isloading: false,
+        };
+    }
+  };
+const [loginState, dispatch] = React.useReducer(
+    loginReducer,
+    initialStateLoading,
+  );
+  const authContext = React.useMemo(
+    () => ({
+      login: () => {
+        console.log('login function called');
+        dispatch({type: 'LOGIN'});
+      },
+      logout: () => {
+        dispatch({type: 'LOGOUT'});
+      },
+     toggleTheme: () => {
+      setDarkMode( darkMode => !darkMode ); //current state utta tha hai initial nhi
+    }
+    }),
+    
+    [],
+  );
+return (
+    <AuthContext.Provider value={authContext}>
+      <NavigationContainer theme={darkMode ? darkTheme : lightTheme}>
+        {loginState.isLoggedIn ? <AuthScreen /> : <UnAuthScreen />}
+      </NavigationContainer>
+    </AuthContext.Provider>
+  );
 };
-
 export default App;
