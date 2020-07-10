@@ -6,7 +6,7 @@ import {lightTheme} from "../Theme/lightTheme";
 const ScanDocuments = () => {
     const [hasPermission, setHasPermission] = React.useState(null);
     const [type, setType] = React.useState(Camera.Constants.Type.back);
-    const [imageUrl, setImageUrl] = React.useState('');
+    const [imageUrl, setImageUrl] = React.useState([]);
     const cameraRef = React.useRef(null);
 
     React.useEffect(() => {
@@ -18,7 +18,7 @@ const ScanDocuments = () => {
     const capture = async () => {
             let image = await cameraRef.current.takePictureAsync();
             console.log(image)
-        setImageUrl(image.uri);
+        setImageUrl(prevState => [...prevState, image.uri]);
     }
     return (
         <View style={{ flex: 1}}>
@@ -71,20 +71,23 @@ const ScanDocuments = () => {
                     </TouchableOpacity>
                     <View style={{
                         width: 50,
-                        backgroundColor: 'red'
                     }}>
-                    <ScrollView>
-                        <Image source={{
-                            uri: imageUrl
-                        }}
-                               style={{
-                                   width: 50,
-                                   height: 50
-                               }}
-                               width={50}
-                               height={50}
-                        />
-                    </ScrollView>
+                    <TouchableOpacity>
+                        {
+                            imageUrl.length > 0 && (
+                                <Image source={{
+                                    uri: imageUrl[imageUrl.length  - 1]
+                                }}
+                                       style={{
+                                           width: 50,
+                                           height: 50
+                                       }}
+                                       width={50}
+                                       height={50}
+                                />
+                            )
+                        }
+                    </TouchableOpacity>
                 </View>
                 </View>
             </Camera>
