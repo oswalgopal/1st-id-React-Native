@@ -1,23 +1,26 @@
 import React from 'react';
 import {View} from 'react-native' ;
 import { Button } from 'react-native-elements';
+import {useTheme} from '@react-navigation/native';
 const ButtonComponent = props => {
+    const theme = useTheme() ;
+    console.log(theme)
     return (
         <View style={{
         
             width: '50%',
             marginTop: props.marginTop,
             marginBottom: props.marginBottom,
-            borderRadius: 100
+            borderRadius: 100 ,
         }}>
             <Button
                onPress={props.onPress}
                title={props.title}
               titleStyle={{
-                  color: '#000000' ,
+                  color: theme.colors.black ,
               }}
               buttonStyle={{
-                  backgroundColor : '#fff',
+                   backgroundColor : theme.colors.white ,
                   borderRadius: 50 
               }}
             />

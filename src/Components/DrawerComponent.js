@@ -33,7 +33,7 @@ return(
 
                    <View style={{marginLeft:15,flexDirection:'column'}}>
                        <Title style={styles.title , {color: theme.colors.black }}>{username}</Title>
-                       <Caption style={styles.caption}>{caption}</Caption>
+                       <Caption style={styles.caption, {color: theme.colors.black }}>{caption}</Caption>
                  </View>
                  </View>
             </View>   
@@ -42,49 +42,49 @@ return(
                             icon={({color, size}) => (
                                 <Icon 
                                 name="home-outline" 
-                                color= '#0080FE'
+                                color= {theme.colors.blue}
                                 size={25}
                                 />
                             )}
-                            labelStyle={{color:'#0080FE',fontWeight:'bold'}}
+                            labelStyle={{color:theme.colors.blue ,fontWeight:'bold'}}
                             label="Home"
                             
-                            // onPress={() => {props.navigation.navigate('Home')}}
+                            onPress={() => {props.navigation.navigate('landingPage')}}
                         />
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
                                 name="account-outline" 
-                                 color= '#0080FE'
+                                 color= {theme.colors.blue}
                                 size={25}
                                 />
                             )}
-                            labelStyle={{color:'#0080FE',fontWeight:'bold'}}
+                            labelStyle={{color:theme.colors.blue,fontWeight:'bold'}}
                             label="Profile"
                             
-                            // onPress={() => {props.navigation.navigate('Profile')}}
+                            onPress={() => {props.navigation.navigate('profilePage')}}
                         />
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
                                 name="note-outline" 
-                                 color= '#0080FE'
+                                 color= {theme.colors.blue}
                                 size={25}
                                 />
                             )}
-                            labelStyle={{color:'#0080FE',fontWeight:'bold'}}
+                            labelStyle={{color:theme.colors.blue,fontWeight:'bold'}}
                             label="My Documents"
-                            // onPress={() => {props.navigation.navigate('BookmarkScreen')}}
+                            onPress={() => {props.navigation.navigate('myDocument')}}
                         />
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
                                 name="camera-outline" 
-                                 color= '#0080FE'
+                                 color= {theme.colors.blue}
                                 size={25}
                                 />
                             )}
-                            labelStyle={{color:'#0080FE',fontWeight:'bold'}}
+                            labelStyle={{color:theme.colors.blue,fontWeight:'bold'}}
                             label="Scan Documents"
                             // onPress={() => {props.navigation.navigate('SettingScreen')}}
                         />
@@ -92,11 +92,11 @@ return(
                             icon={({color, size}) => (
                                 <Icon 
                                 name="account-check-outline" 
-                                color= '#0080FE'
+                                color= {theme.colors.blue}
                                 size={25}
                                 />
                             )}
-                            labelStyle={{color:'#0080FE',fontWeight:'bold'}}
+                            labelStyle={{color:theme.colors.blue,fontWeight:'bold'}}
                             label="Support"
                             // onPress={() => {props.navigation.navigate('SupportScreen')}}
                         />
@@ -104,11 +104,11 @@ return(
                             icon={({color, size}) => (
                                 <Icon 
                                 name="security" 
-                                color= '#0080FE'
+                                color= {theme.colors.blue}
                                 size={25}
                                 />
                             )}
-                            labelStyle={{color:'#0080FE',fontWeight:'bold'}}
+                            labelStyle={{color:theme.colors.blue,fontWeight:'bold'}}
                             label="Privacy Policy"
                             // onPress={() => {props.navigation.navigate('SupportScreen')}}
                         />
@@ -116,11 +116,11 @@ return(
                             icon={({color, size}) => (
                                 <Icon 
                                 name="information-outline" 
-                                color= '#0080FE'
+                                color= {theme.colors.blue}
                                 size={25}
                                 />
                             )}
-                            labelStyle={{color:'#0080FE',fontWeight:'bold'}}
+                            labelStyle={{color:theme.colors.blue,fontWeight:'bold'}}
                             label="Terms and conditions"
                             // onPress={() => {props.navigation.navigate('SupportScreen')}}
                         />
@@ -129,7 +129,7 @@ return(
                     <Drawer.Section title="Preferences" >
                         <TouchableRipple onPress={() => {toggleTheme()}}>
                             <View style={styles.preference}>
-                                <Text style={{color:'#0080FE',fontWeight:'bold'}}>Dark Theme</Text>
+                                <Text style={{color:theme.colors.blue,fontWeight:'bold'}}>Dark Theme</Text>
                                 <View pointerEvents="none">
                                  <Switch value={theme.dark} />
                                 </View>
@@ -144,13 +144,13 @@ return(
                 icon={({color, size}) => (
                                 <Icon 
                                 name= "exit-to-app"
-                                color= '#0080FE'
+                                color= {theme.colors.blue}
                                 size={25}
                                 />
                             )}
                  label="Logout"
                  onPress={() => {logout()}}
-                 labelStyle={{color:'#0080FE',fontWeight:'bold'}}
+                 labelStyle={{color:theme.colors.blue ,fontWeight:'bold'}}
                />
            </Drawer.Section>
         </View>

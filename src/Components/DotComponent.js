@@ -1,8 +1,9 @@
 import React  from 'react';
 import {View, Dimensions,Keyboard} from 'react-native';
+import {useTheme} from '@react-navigation/native';
 const DotComponent = () => {
     const [isKeyboardVisible, setKeyboardVisible] =React.useState(false);
-
+    const theme = useTheme() ;
  React.useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -26,7 +27,7 @@ const DotComponent = () => {
         <View style={{
             width: 30,
             height: 30,
-            backgroundColor: 'white',
+            backgroundColor: theme.colors.white,
             position: 'absolute',
             top: isKeyboardVisible ? 10 : 110 ,
             left: Dimensions.get('window').width / 2 - 15,

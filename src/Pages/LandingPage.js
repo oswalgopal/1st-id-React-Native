@@ -7,9 +7,11 @@ import GrantAccessModal from '../Components/GrantAccessModal';
 import DotComponent from '../Components/DotComponent';
 import ImageComponent from '../Components/ImageComponent';
 import ThreadComponent from '../Components/ThreadComponent';
+import {useTheme} from '@react-navigation/native';
 
 
 const LandingPage = () => {
+const theme = useTheme() ; 
 const data = [
   {id: '1', value: '4th sem IT ACT',accessType:'P',owner:'Yashi Rathore'},
   {id: '2', value: '4th sem NAD',accessType:'P',owner:'Manisha Sahu'},
@@ -31,12 +33,12 @@ const styles = StyleSheet.create({
   item: {
     flex: 1,
     margin: 3,
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.white ,
     borderRadius: 10 ,
     elevation: 5
   }, 
   add: {
-   color: '#0080FE',
+   color: theme.colors.blue ,
    position: 'absolute' ,
    bottom : 20 ,
    right: 20,
@@ -46,7 +48,7 @@ const styles = StyleSheet.create({
 
 return(
         
-    <SafeAreaView style={{position:'absolute'}}>
+    <SafeAreaView style={{flex:1}}>
      <SearchComponent />
      <FlatList
       data={data}
@@ -60,11 +62,19 @@ return(
        }>
         <View style={styles.itemContainer}>
        
-        <View style={styles.item}>
+        <View style={{
+          flex: 1,
+          margin: 3,
+         backgroundColor: theme.colors.white ,
+         borderRadius: 10 ,
+         borderWidth: 1 ,
+         borderColor: theme.colors.black ,
+         elevation: 5}}>
+         
           <Image source={require('../images/pdf.png')} style={{ width:100 , height: 120, left:40}} />
-           <Text style={{marginLeft:5,marginTop:10 , fontWeight:'bold'}}>{item.value}</Text>
-            <Text style={{left:5 , fontSize:10}}>By:- {item.owner}</Text>
-          <Icon name={item.accessType === 'P' ? 'lock' : 'eye'} size={25} style={{left:140, bottom:30}}/>
+           <Text style={{marginLeft:5,marginTop:10 , fontWeight:'bold', color:theme.colors.black}}>{item.value}</Text>
+            <Text style={{left:5 , fontSize:10, color:theme.colors.black }}>By:- {item.owner}</Text>
+          <Icon name={item.accessType === 'P' ? 'lock' : 'eye'} size={25} style={{left:140, bottom:30}} color={theme.colors.black}/>
         </View>
         </View>
       </TouchableHighlight>
@@ -72,7 +82,7 @@ return(
       )}
       keyExtractor={item => item.id}
       numColumns={numColumns} />
-     <Icon name="plus-circle" size={60} style={styles.add} onPress={() => {setModalVisible({open:true,type:'add'})} } />
+     <Icon name="plus-circle" size={60} style={{ color: theme.colors.blue ,position: 'absolute' ,bottom : 20 ,right: 20}} onPress={() => {setModalVisible({open:true,type:'add'})} } />
      <Modal
         animationType="slide"
         transparent={true}
@@ -88,7 +98,7 @@ return(
         flex: 1 ,
         width: '100%' ,
         height: '100%' ,
-        backgroundColor: 'rgba(255,255,255,0.7)'
+        backgroundColor: theme.dark ? 'rgba(0,0,0,0.7)':'rgba(255,255,255,0.7)'
       }}/>
       <DotComponent/>
       <ThreadComponent />

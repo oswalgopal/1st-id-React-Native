@@ -1,5 +1,6 @@
 import React from 'react';
-import {Text} from 'react-native'
+import {Text} from 'react-native' ;
+
 const TextComponent = props => {
     return (
         <Text style={{

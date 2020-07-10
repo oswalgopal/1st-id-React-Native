@@ -7,8 +7,9 @@ import {
     TouchableHighlight,
     View,
 } from 'react-native';
-
+import {useTheme} from '@react-navigation/native';
 import { SwipeListView } from 'react-native-swipe-list-view';
+
 
 export default function SwipeList() {
     const [listData, setListData] = useState(
@@ -22,7 +23,7 @@ export default function SwipeList() {
             rowMap[rowKey].closeRow();
         }
     };
-
+    const theme = useTheme() ;
     const deleteRow = (rowMap, rowKey) => {
         closeRow(rowMap, rowKey);
         const newData = [...listData];
@@ -38,11 +39,11 @@ export default function SwipeList() {
     const renderItem = data => (
         <TouchableHighlight
             onPress={() => console.log('You touched me')}
-            style={styles.rowFront}
+            style={{alignItems: 'flex-start' , borderWidth: 1 ,borderColor:theme.colors.blue ,margin: 5 , backgroundColor: '#fff',justifyContent: 'center',height: 80,elevation: 5 }}
             underlayColor={'#AAA'}
         >
             <View>
-                <Icon name='user-circle' size={40} color='#0080FE' style={{left: 10 ,top: 10 }}  />
+                <Icon name='user-circle' size={40} color={theme.colors.blue} style={{left: 10 ,top: 10 }}  />
                 <Text  style={{left:80 , bottom:20}}>{data.item.text} wants access to .......... </Text>
             </View>
         </TouchableHighlight>
@@ -96,14 +97,7 @@ const styles = StyleSheet.create({
     },
     rowFront: {
         // alignItems: 'center',
-        alignItems: 'flex-start' ,
-        borderWidth: 1 ,
-        borderColor:'#0080FE' ,
-        margin: 5 ,
-        backgroundColor: '#fff',
-        justifyContent: 'center',
-        height: 80,
-        elevation: 5, 
+        alignItems: 'flex-start' , borderWidth: 1 ,borderColor:'#0080FE' ,margin: 5 , backgroundColor: '#fff',justifyContent: 'center',height: 80,elevation: 5, 
     },
     rowBack: {
         alignItems: 'center',

@@ -3,8 +3,11 @@ import {View, ImageBackground, SafeAreaView, Dimensions, StatusBar,Text, Image} 
 import TextComponent from '../Components/TextComponent';
 import InputComponent from '../Components/InputComponent';
 import ButtonComponent from '../Components/ButtonComponent';
+import {useTheme} from '@react-navigation/native';
 import { Button } from 'react-native-elements';
+
 const AddDocumentModal = () =>{
+    const theme = useTheme() ;
     const[docname, setDocname] = React.useState('');
     const[year, setYear] = React.useState('');
     const[semester, setSemester] = React.useState('');
@@ -21,7 +24,7 @@ const AddDocumentModal = () =>{
 }}>
         <TextComponent
                     text={'Add New Document'}
-                    color={'#fff'}
+                    color={theme.colors.white}
                     fontSize={20}
                     fontWeight = {'bold'}
                     padding={5}
@@ -56,8 +59,8 @@ const AddDocumentModal = () =>{
                     onChangeTextFunction={setAccess}
                     secureTextEntry={false}
                 />            
-            <Image source={require('../images/cloud.png')} style={{ width:100 , height: 30, left:8, top:20}} />
-            <Text style={{top: 25 , fontWeight:'bold', color:'#fff' }}>Upload your document </Text> 
+            <Image source={theme.dark ? require('../images/cloud-dark.png'): require('../images/cloud.png')} style={{ width:100 , height: 30, left:8, top:20}} />
+            <Text style={{top: 25 , fontWeight:'bold', color:theme.colors.white }}>Upload your document </Text> 
              <View style={{
              top: 40 ,
              flexDirection: 'row' 
@@ -65,10 +68,10 @@ const AddDocumentModal = () =>{
              <Button
                title= 'Cancel'
               titleStyle={{
-                  color: '#000000' ,
+                  color: theme.colors.black ,
               }}
               buttonStyle={{
-                  backgroundColor : '#fff',
+                  backgroundColor : theme.colors.white ,
                   // borderRadius: 50 ,
                    width: 100 ,
                    height:30 ,
@@ -78,10 +81,10 @@ const AddDocumentModal = () =>{
             <Button
                title= 'Add'
               titleStyle={{
-                  color: '#000000' ,
+                  color: theme.colors.black ,
               }}
               buttonStyle={{
-                  backgroundColor : '#fff',
+                  backgroundColor : theme.colors.white ,
                   width: 100 ,
                   height:30,
                   marginLeft: 5
