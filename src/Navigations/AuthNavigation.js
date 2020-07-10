@@ -10,12 +10,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer' ;
 import ProfilePage from '../Pages/ProfilePage';
 import DrawerComponent from '../Components/DrawerComponent';
+import ScanDocuments from "../Pages/ScanDocuments";
 const Drawer = createDrawerNavigator();
 const Auth = createStackNavigator() ;
 const AuthScreen = () => {
 return (
      <Drawer.Navigator drawerContent={props => <DrawerComponent {...props} />}>
-            <Drawer.Screen name='landingPage' component={AuthNav} />            
+            <Drawer.Screen name='landingPage' component={AuthNav} />
      </Drawer.Navigator>
 );
 };
@@ -37,19 +38,27 @@ const AuthNav = () =>  (
                     name="notifications"
                     component={Notifications}
                 />
-    <Auth.Screen 
-                    options={{headerShown: false }}    
-                    name = "profilePage" 
-                    component= {ProfilePage} 
-                />            
     <Auth.Screen
-                    options={({navigation}) => ({
-                        header: () => <Header navigation={navigation} bellShown={false} />
-                    })}
+                    options={{headerShown: false }}
+                    name = "profilePage"
+                    component= {ProfilePage}
+                />
+        <Auth.Screen
+                        options={({navigation}) => ({
+                            header: () => <Header navigation={navigation} bellShown={false} />
+                        })}
 
-                    name="myDocument"
-                    component={MyDocument}
-                />            
+                        name="myDocument"
+                        component={MyDocument}
+                    />
+        <Auth.Screen
+            options={({navigation}) => ({
+                header: () => <Header navigation={navigation} bellShown={true} />
+            })}
+
+            name="scan"
+            component={ScanDocuments}
+        />
     </Auth.Navigator>
 );
 export default AuthScreen ;

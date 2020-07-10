@@ -12,16 +12,27 @@ const Header = (props) => {
         flexDirection: 'row',
         backgroundColor: theme.colors.blue ,
         alignItems : 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+           paddingTop: 20,
+           paddingLeft: 10,
+           paddingRight: 10
        }}>
-        <TouchableOpacity onPress={() =>{props.navigation.openDrawer()}}><Icon name="bars" size={25} color={theme.colors.white} style={{left:10}} /></TouchableOpacity>
+        <TouchableOpacity
+        style={{
+            height: '100%',
+            width: 50,
+            justifyContent: "center"
+        }}
+            onPress={() =>{props.navigation.openDrawer()}}>
+            <Icon name="bars" size={25} color={theme.colors.white} style={{left:10}} />
+        </TouchableOpacity>
 
        <View style={styles.headerRight}>
         <TouchableOpacity onPress={() => {props.navigation.navigate('notifications')}}><Icon name={props.bellShown && 'bell' } size={25} color={theme.colors.white} style={styles.icon3} /></TouchableOpacity>
         <TouchableOpacity onPress={() =>{props.navigation.navigate('profilePage')}}><Icon name="user" size={30} color={theme.colors.white} style={styles.icon2}/></TouchableOpacity>
         </View>
         </View>
-   ); 
+   );
 }
 const styles = StyleSheet.create({
     // header: {
@@ -37,7 +48,7 @@ const styles = StyleSheet.create({
         width: 90 ,
         height: 80 ,
         alignItems: 'center',
-        flexDirection:'row'
+        flexDirection:'row',
     }
 })
 export default Header ;

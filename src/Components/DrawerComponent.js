@@ -22,7 +22,7 @@ let randomHex = () => {
 const [initials , setinitials] = React.useState('Manoj');
 const [username,setUsername] = React.useState('Manoj Rathore');
 const [caption,setCaption] = React.useState('rathoremanoj98@gmail.com');
-const color = randomHex() ;    
+const color = randomHex() ;
 return(
         <View style={{flex:1}} >
            <DrawerContentScrollView {...props}>
@@ -36,38 +36,38 @@ return(
                        <Caption style={styles.caption, {color: theme.colors.black }}>{caption}</Caption>
                  </View>
                  </View>
-            </View>   
+            </View>
             <Drawer.Section style={styles.drawerSection}>
-                        <DrawerItem 
+                        <DrawerItem
                             icon={({color, size}) => (
-                                <Icon 
-                                name="home-outline" 
+                                <Icon
+                                name="home-outline"
                                 color= {theme.colors.blue}
                                 size={25}
                                 />
                             )}
                             labelStyle={{color:theme.colors.blue ,fontWeight:'bold'}}
                             label="Home"
-                            
+
                             onPress={() => {props.navigation.navigate('landingPage')}}
                         />
-                        <DrawerItem 
+                        <DrawerItem
                             icon={({color, size}) => (
-                                <Icon 
-                                name="account-outline" 
+                                <Icon
+                                name="account-outline"
                                  color= {theme.colors.blue}
                                 size={25}
                                 />
                             )}
                             labelStyle={{color:theme.colors.blue,fontWeight:'bold'}}
                             label="Profile"
-                            
+
                             onPress={() => {props.navigation.navigate('profilePage')}}
                         />
-                        <DrawerItem 
+                        <DrawerItem
                             icon={({color, size}) => (
-                                <Icon 
-                                name="note-outline" 
+                                <Icon
+                                name="note-outline"
                                  color= {theme.colors.blue}
                                 size={25}
                                 />
@@ -76,22 +76,22 @@ return(
                             label="My Documents"
                             onPress={() => {props.navigation.navigate('myDocument')}}
                         />
-                        <DrawerItem 
+                        <DrawerItem
                             icon={({color, size}) => (
-                                <Icon 
-                                name="camera-outline" 
+                                <Icon
+                                name="camera-outline"
                                  color= {theme.colors.blue}
                                 size={25}
                                 />
                             )}
                             labelStyle={{color:theme.colors.blue,fontWeight:'bold'}}
                             label="Scan Documents"
-                            // onPress={() => {props.navigation.navigate('SettingScreen')}}
+                            onPress={() => {props.navigation.navigate('scan')}}
                         />
-                        <DrawerItem 
+                        <DrawerItem
                             icon={({color, size}) => (
-                                <Icon 
-                                name="account-check-outline" 
+                                <Icon
+                                name="account-check-outline"
                                 color= {theme.colors.blue}
                                 size={25}
                                 />
@@ -100,10 +100,10 @@ return(
                             label="Support"
                             // onPress={() => {props.navigation.navigate('SupportScreen')}}
                         />
-                        <DrawerItem 
+                        <DrawerItem
                             icon={({color, size}) => (
-                                <Icon 
-                                name="security" 
+                                <Icon
+                                name="security"
                                 color= {theme.colors.blue}
                                 size={25}
                                 />
@@ -112,10 +112,10 @@ return(
                             label="Privacy Policy"
                             // onPress={() => {props.navigation.navigate('SupportScreen')}}
                         />
-                        <DrawerItem 
+                        <DrawerItem
                             icon={({color, size}) => (
-                                <Icon 
-                                name="information-outline" 
+                                <Icon
+                                name="information-outline"
                                 color= {theme.colors.blue}
                                 size={25}
                                 />
@@ -140,9 +140,9 @@ return(
             </View>
            </DrawerContentScrollView>
            <Drawer.Section style={styles.bottomDrawerSection}>
-               <DrawerItem 
+               <DrawerItem
                 icon={({color, size}) => (
-                                <Icon 
+                                <Icon
                                 name= "exit-to-app"
                                 color= {theme.colors.blue}
                                 size={25}
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
       fontSize: 16,
       marginTop: 3,
       fontWeight: 'bold',
-      
+
     },
     caption: {
       fontSize: 14,
