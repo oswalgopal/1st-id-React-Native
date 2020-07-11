@@ -7,6 +7,7 @@ import {darkTheme} from './src/Theme/darkTheme';
 import {lightTheme} from './src/Theme/lightTheme';
 import {useEffect} from 'react';
 import {AuthContext} from './src/context/authContext';
+import {StatusBar} from "react-native";
 const App = () => {
   const initialStateLoading = {
     isloading: true,
@@ -51,6 +52,7 @@ const App = () => {
   );
   return (
       <AuthContext.Provider value={authContext}>
+          <StatusBar backgroundColor={lightTheme.colors.blue}/>
         <NavigationContainer theme={darkMode ? darkTheme : lightTheme}>
           {loginState.isLoggedIn ? <AuthScreen /> : <UnAuthScreen />}
         </NavigationContainer>

@@ -11,6 +11,8 @@ import {createDrawerNavigator} from '@react-navigation/drawer' ;
 import ProfilePage from '../Pages/ProfilePage';
 import DrawerComponent from '../Components/DrawerComponent';
 import ScanDocuments from "../Pages/ScanDocuments";
+import ScannedImages from "../Pages/ScannedImages";
+import {lightTheme} from "../Theme/lightTheme";
 const Drawer = createDrawerNavigator();
 const Auth = createStackNavigator() ;
 const AuthScreen = () => {
@@ -58,6 +60,22 @@ const AuthNav = () =>  (
 
             name="scan"
             component={ScanDocuments}
+        />
+        <Auth.Screen
+            options={({navigation}) => ({
+                headerStyle: {
+                    backgroundColor: lightTheme.colors.blue
+                },
+                headerTitleStyle: {
+                    color: lightTheme.colors.white
+                },
+                headerTitle: 'Scanned Images',
+                headerRightContainerStyle: {
+                    color: 'white'
+                },
+            })}
+            name="scanImages"
+            component={ScannedImages}
         />
     </Auth.Navigator>
 );

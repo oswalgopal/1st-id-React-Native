@@ -8,12 +8,11 @@ const Header = (props) => {
    return(
        <View style={{
         width: '100%',
-        height: 80,
+        height: 60,
         flexDirection: 'row',
         backgroundColor: theme.colors.blue ,
         alignItems : 'center',
         justifyContent: 'space-between',
-           paddingTop: 20,
            paddingLeft: 10,
            paddingRight: 10
        }}>
@@ -46,7 +45,7 @@ const styles = StyleSheet.create({
     headerRight: {
         justifyContent: 'space-evenly',
         width: 90 ,
-        height: 80 ,
+        height: 60 ,
         alignItems: 'center',
         flexDirection:'row',
     }
