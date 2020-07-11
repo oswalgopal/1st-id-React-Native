@@ -16,7 +16,7 @@ const ScannedImages = (props) => {
                         uri: item
                     }}
                            style={{
-                               height: 150,
+                               height: 250,
                                margin: 10,
                                width: '48%',
                                marginLeft: 'auto',
