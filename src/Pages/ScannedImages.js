@@ -5,16 +5,20 @@ import {lightTheme} from "../Theme/lightTheme";
 
 const ScannedImages = (props) => {
     const makePdf = async () => {
-        console.log(props.route.params.images);
+        // console.log(props.route.params.images);
+        const temp = [];
+        for (let i =0 ; i < props.route.params.images.length ; i++) {
+            const img = props.route.params.images[i].slice(7, props.route.params.images[i].length)
+            temp.push(img);
+        }
+        // console.log('temp', temp);
         try {
             const options = {
                 imagePaths:
-                    [
-                        "/data/user/0/com.notespedia/cache/Camera/bb3be46b-8507-44fd-ac9c-7df8e42d4329.jpg",
-                        "/data/user/0/com.notespedia/cache/Camera/5c098b14-023f-4f6f-9adb-40d0dee2a3ad.jpg"
-                    ],
+                    temp,
                 name:  'Scanned Name',
         };
+            // console.log(options);
             const pdf = await RNImageToPdf.createPDFbyImages(options);
             console.log(pdf);
         } catch(e) {
