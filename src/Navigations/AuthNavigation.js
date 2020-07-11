@@ -13,6 +13,7 @@ import DrawerComponent from '../Components/DrawerComponent';
 import ScanDocuments from "../Pages/ScanDocuments";
 import ScannedImages from "../Pages/ScannedImages";
 import {lightTheme} from "../Theme/lightTheme";
+import PdfVIewer from "../Pages/PdfVIewer";
 const Drawer = createDrawerNavigator();
 const Auth = createStackNavigator() ;
 const AuthScreen = () => {
@@ -76,6 +77,22 @@ const AuthNav = () =>  (
             })}
             name="scanImages"
             component={ScannedImages}
+        />
+        <Auth.Screen
+            options={({navigation}) => ({
+                headerStyle: {
+                    backgroundColor: lightTheme.colors.blue
+                },
+                headerTitleStyle: {
+                    color: lightTheme.colors.white
+                },
+                headerTitle: 'Pdf Viewer',
+                headerRightContainerStyle: {
+                    color: 'white'
+                },
+            })}
+            name="pdfViewer"
+            component={PdfVIewer}
         />
     </Auth.Navigator>
 );
