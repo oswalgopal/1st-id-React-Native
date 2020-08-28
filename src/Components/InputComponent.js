@@ -20,6 +20,8 @@ const InputComponent = props => {
             secureTextEntry={props.secureTextEntry}
             value={props.field}
             editable={props.editable}
+            keyboardType={props.keyboardType? props.keyboardType: 'default'}
+            
         />
     );
 };

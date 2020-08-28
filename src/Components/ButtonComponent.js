@@ -23,6 +23,13 @@ const ButtonComponent = props => {
                    backgroundColor : theme.colors.white ,
                   borderRadius: 50 
               }}
+              disabled={props.disabled}
+              disabledStyle={{
+              backgroundColor: '#dfdfdf',
+             }}
+              disabledTitleStyle={{
+                color: '#fff',
+            }}
             />
             
             {/* <Button

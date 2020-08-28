@@ -1,11 +1,12 @@
 import React  from 'react';
-import {View, ImageBackground, SafeAreaView, Dimensions, StatusBar,Text, Image} from 'react-native';
+import {View, ImageBackground, SafeAreaView, Dimensions, StatusBar,Text, Image,TouchableOpacity} from 'react-native';
 import TextComponent from '../Components/TextComponent';
 import InputComponent from '../Components/InputComponent';
 import ButtonComponent from '../Components/ButtonComponent';
 import {useTheme} from '@react-navigation/native';
 import { Button } from 'react-native-elements';
-
+import DocumentPicker from 'react-native-document-picker';
+import S3 from 'aws-sdk/clients/s3';
 const AddDocumentModal = () =>{
     const theme = useTheme() ;
     const[docname, setDocname] = React.useState('');
@@ -14,7 +15,42 @@ const AddDocumentModal = () =>{
     const[subject , setSubject] = React.useState('');
     const[access , setAccess] = React.useState('');
 
-  return(    
+    const pick = async () => {
+        try {
+            const res = await DocumentPicker.pick({
+                type: [DocumentPicker.types.pdf],
+            });
+            console.log(
+                res.uri,
+                res.type, // mime type
+                res.name,
+                res.size
+            );
+            setUrl(res.uri);
+            upload(res);
+        } catch (err) {
+            if (DocumentPicker.isCancel(err)) {
+                // User cancelled the picker, exit any dialogs or menus and move on
+            } else {
+                throw err;
+            }
+        }
+    }
+//     const upload = async file => {
+//     const s3bucket = new S3({
+//         accessKeyId: 'AKIAYVYWOBA4MAHIQJGS',
+//         secretAccessKey:'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',
+//         Bucket: '1staid',
+//         signatureVersion:'v4',
+//     });
+// const params ={
+//     Bucket:'1staid/pdfs',
+//     Key: file.name,
+//     Body: file.uri,
+//     ContentDisposition:'inline'
+// }
+//     }
+  return(
 <SafeAreaView style={{
             flex:1,
             display: 'flex',
@@ -52,18 +88,18 @@ const AddDocumentModal = () =>{
                     placeholder={'Subject'}
                     onChangeTextFunction={setSubject}
                     secureTextEntry={false}
-                /> 
+                />
             <InputComponent
                     field={access}
                     placeholder={'Access : Private or Public'}
                     onChangeTextFunction={setAccess}
                     secureTextEntry={false}
-                />            
-            <Image source={theme.dark ? require('../images/cloud-dark.png'): require('../images/cloud.png')} style={{ width:100 , height: 30, left:8, top:20}} />
-            <Text style={{top: 25 , fontWeight:'bold', color:theme.colors.white }}>Upload your document </Text> 
+                />
+    <TouchableOpacity onPress={pick}><Image source={theme.dark ? require('../images/cloud-dark.png') : require('../images/cloud.png')} style={{ width:100 , height: 30, left:8, top:20}} /></TouchableOpacity>
+            <Text style={{top: 25 , fontWeight:'bold', color:theme.colors.white }}>Upload your document </Text>
              <View style={{
              top: 40 ,
-             flexDirection: 'row' 
+             flexDirection: 'row'
              }} >
              <Button
                title= 'Cancel'
@@ -92,6 +128,6 @@ const AddDocumentModal = () =>{
             />
             </View>
  </SafeAreaView>
-);        
+);
 }
 export default AddDocumentModal ;
