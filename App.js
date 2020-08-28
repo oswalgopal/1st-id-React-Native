@@ -11,7 +11,7 @@ import {StatusBar} from "react-native";
 const App = () => {
   const initialStateLoading = {
     isloading: true,
-    isLoggedIn: false ,
+    isLoggedIn: true , // todo to be changed to false
   };
   const [darkMode, setDarkMode] = React.useState(false);
   const loginReducer = (prevState, action) => {
