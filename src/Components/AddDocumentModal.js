@@ -14,7 +14,7 @@ const AddDocumentModal = () =>{
     const[semester, setSemester] = React.useState('');
     const[subject , setSubject] = React.useState('');
     const[access , setAccess] = React.useState('');
-
+    const[url, setUrl] = React.useState('');
     const pick = async () => {
         try {
             const res = await DocumentPicker.pick({
@@ -36,20 +36,30 @@ const AddDocumentModal = () =>{
             }
         }
     }
-//     const upload = async file => {
-//     const s3bucket = new S3({
-//         accessKeyId: 'AKIAYVYWOBA4MAHIQJGS',
-//         secretAccessKey:'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',
-//         Bucket: '1staid',
-//         signatureVersion:'v4',
-//     });
-// const params ={
-//     Bucket:'1staid/pdfs',
-//     Key: file.name,
-//     Body: file.uri,
-//     ContentDisposition:'inline'
-// }
-//     }
+    const upload = async file => {
+    const s3bucket = new S3({
+        accessKeyId: 'AKIAYVYWOBA4MAHIQJGS',
+        secretAccessKey:'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',
+        Bucket: '1staid',
+        signatureVersion:'v4',
+    });
+const params ={
+    Bucket:'1staid/pdfs',
+    Key: file.name,
+    Body: file.uri,
+    ContentDisposition:'inline',
+    ContentType: file.type,
+    ACL: 'public-read',
+}
+       await s3bucket.putObject(params, (err, data) => {
+            if (err) {
+                console.log(err) ;
+                console.log('error in callback');
+            }
+            console.log('success');
+            console.log("Response URL : "+ data);
+        })
+    }
   return(
 <SafeAreaView style={{
             flex:1,
