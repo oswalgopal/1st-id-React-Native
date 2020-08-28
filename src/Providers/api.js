@@ -13,7 +13,7 @@ export class Api {
     await this.getAsyncData('loginData')
       .then(res => {
         if (res) {
-          token = res.auth_token;
+          let token = res.auth_token;
           myHeaders.set('Authorization', token);
         }
       })
@@ -41,7 +41,7 @@ export class Api {
     await this.getAsyncData('loginData')
       .then(res => {
         if (res) {
-          token = res.auth_token;
+          let token = res.auth_token;
           myHeaders.set('Authorization', token);
         }
       })
@@ -66,7 +66,7 @@ export class Api {
     await this.getAsyncData('loginData')
      .then(res => {
         if (res) {
-          token = res.auth_token;
+          let token = res.auth_token;
           myHeaders.set('Authorization', token);
         }
       })
@@ -97,7 +97,7 @@ export class Api {
     await this.getAsyncData('loginData')
       .then(res => {
         if (res) {
-          token = res.auth_token;
+          let token = res.auth_token;
           myHeaders.set('Authorization', token);
         }
       })
@@ -170,7 +170,7 @@ export class Api {
    * function to show the toaster
    */
   showToaster = message => {
-    if (Platform.os === 'ios') {
+    if (Platform.OS === 'ios') {
       this.showAlert('Error!', message);
     } else {
       ToastAndroid.show(message, ToastAndroid.CENTER, ToastAndroid.CENTER);

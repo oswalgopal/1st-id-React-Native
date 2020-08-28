@@ -8,10 +8,10 @@ const Header = (props) => {
    return(
        <View style={{
         width: '100%',
-        height: 60,
+        height: Platform.OS === "ios" ? 80 : 60,
         flexDirection: 'row',
-        backgroundColor: theme.colors.blue ,
-        alignItems : 'center',
+           paddingTop: Platform.OS === "ios" ? 30 : 0,
+           backgroundColor: theme.colors.blue ,
         justifyContent: 'space-between',
            paddingLeft: 10,
            paddingRight: 10
@@ -20,7 +20,8 @@ const Header = (props) => {
         style={{
             height: '100%',
             width: 50,
-            justifyContent: "center"
+            justifyContent: "center",
+            // paddingTop: Platform.OS === "ios" ? 30 : 0
         }}
             onPress={() =>{props.navigation.openDrawer()}}>
             <Icon name="bars" size={25} color={theme.colors.white} style={{left:10}} />
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
     headerRight: {
         justifyContent: 'space-evenly',
         width: 90 ,
-        height: 60 ,
+        height: '100%' ,
         alignItems: 'center',
         flexDirection:'row',
     }

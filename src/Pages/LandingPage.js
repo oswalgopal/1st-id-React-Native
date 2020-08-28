@@ -11,6 +11,7 @@ import {
   Text,
   StyleSheet,
   Modal,
+    TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SearchComponent from '../Components/SearchComponent';
@@ -33,7 +34,7 @@ const LandingPage = (props) => {
     {id: '6', value: '3rd sem LA', accessType: 'S', owner: 'Manisha Sahu'},
   ];
   const numColumns = 2;
-  const size = Dimensions.get('window').width / numColumns;
+  const size = (Dimensions.get('window').width / numColumns) - 15;
   const [modalVisible, setModalVisible] = React.useState({
     open: false,
     type: '',
@@ -45,15 +46,18 @@ const LandingPage = (props) => {
   const styles = StyleSheet.create({
     itemContainer: {
       width: size,
-      height: size,
+      height: size * 1.25,
       padding: 0,
+        marginTop: 10,
+        shadowColor: theme.colors.blue,
+        shadowRadius: 2,
+        shadowOpacity: 0.2,
     },
     item: {
       flex: 1,
       margin: 3,
       backgroundColor: theme.colors.white,
       borderRadius: 10,
-      elevation: 5,
     },
     add: {
       color: theme.colors.blue,
@@ -83,10 +87,37 @@ const getData = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <SearchComponent />
+      <TouchableOpacity style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginRight: 10,
+          marginTop: 10,
+          justifyContent: "flex-end"
+      }} onPress={() => {
+          alert('implement filter and sort')
+      }}>
+          <Text style={{
+              textAlign: "right",
+          }}>
+              Sort + filter
+          </Text>
+          <Icon
+              name="arrow-down"
+              size={20}
+              style={{
+                    marginLeft: 10,
+                  color: theme.colors.blue,
+              }}
+          />
+      </TouchableOpacity>
       <FlatList
         data={data}
         renderItem={({item}) => (
-          <TouchableHighlight
+          <TouchableOpacity
+              style={{
+                  marginLeft: 'auto',
+                  marginRight: 'auto'
+              }}
             onPress={() => {
               if (item.accessType === 'P') {
                 setModalVisible({open: true, type: 'grant'});
@@ -99,37 +130,36 @@ const getData = () => {
             flex: 1,
             margin: 3,
             backgroundColor: theme.colors.white,
-            borderRadius: 10,
-            borderWidth: 1,
-            borderColor: theme.colors.black,
+            borderRadius: 3,
             elevation: 5,
         }}>
         <Image
                   source={require('../images/pdf.png')}
-                  style={{width: 100, height: 120, left: 40}}
+                  style={{width: '80%', height: '80%', marginRight: 'auto', marginLeft: 'auto'}}
                 />
                 <Text
                   style={{
                     marginLeft: 5,
                     marginTop: 10,
                     fontWeight: 'bold',
-                    color: theme.colors.black,
+                      fontSize: 16,
+                    color: theme.colors.blue,
                   }}>
                   {item.value}
                 </Text>
                 <Text
-                  style={{left: 5, fontSize: 10, color: theme.colors.black}}>
+                  style={{left: 5, fontSize: 12, color: theme.colors.black}}>
                   By:- {item.owner}
                 </Text>
                 <Icon
                   name={item.accessType === 'P' ? 'lock' : 'eye'}
-                  size={25}
-                  style={{left: 140, bottom: 30}}
+                  size={20}
+                  style={{marginLeft: 'auto', marginRight: 10, bottom: 25}}
                   color={theme.colors.black}
                 />
               </View>
             </View>
-          </TouchableHighlight>
+          </TouchableOpacity>
 
       )}
         keyExtractor={(item) => item.id}
@@ -181,4 +211,3 @@ const getData = () => {
   );
 };
 export default LandingPage ;
-

@@ -8,12 +8,14 @@ const InputComponent = props => {
             style={{
                 height: 40,
                 width: '70%',
+                color: theme.colors.black,
                 borderColor: theme.colors.blue ,
                 backgroundColor: theme.colors.white ,
                 borderRadius: 5,
                 marginTop: 10,
                 paddingLeft: 10,
             }}
+            autoCapitalize={"none"}
             placeholder={props.placeholder}
             placeholderTextColor={theme.colors.black}
             onChangeText={ev => props.onChangeTextFunction(ev)}
@@ -21,7 +23,7 @@ const InputComponent = props => {
             value={props.field}
             editable={props.editable}
             keyboardType={props.keyboardType? props.keyboardType: 'default'}
-            
+
         />
     );
 };

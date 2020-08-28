@@ -6,7 +6,6 @@ import ButtonComponent from '../Components/ButtonComponent';
 import {useTheme} from '@react-navigation/native';
 import { Button } from 'react-native-elements';
 import DocumentPicker from 'react-native-document-picker';
-import S3 from 'aws-sdk/clients/s3';
 const AddDocumentModal = () =>{
     const theme = useTheme() ;
     const[docname, setDocname] = React.useState('');
