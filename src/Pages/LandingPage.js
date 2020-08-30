@@ -24,15 +24,18 @@ import {useTheme} from '@react-navigation/native';
 import {Api} from '../Providers/api';
 const api = new Api();
 const LandingPage = (props) => {
+    React.useEffect(() => {
+        getData();
+    }, []);
   const theme = useTheme();
-  const data = [
-    {id: '1', value: '4th sem IT ACT', accessType: 'P', owner: 'Yashi Rathore'},
-    {id: '2', value: '4th sem NAD', accessType: 'P', owner: 'Manisha Sahu'},
-    {id: '3', value: '4th sem DCC', accessType: 'P', owner: 'Yashi Rathore'},
-    {id: '4', value: '4th sem DBMS', accessType: 'S', owner: 'Manisha Sahu'},
-    {id: '5', value: '3rd sem French', accessType: 'S', owner: 'Yashi Rathore'},
-    {id: '6', value: '3rd sem LA', accessType: 'S', owner: 'Manisha Sahu'},
-  ];
+  // const data = [
+  //   {id: '1', value: '4th sem IT ACT', accessType: 'P', owner: 'Yashi Rathore'},
+  //   {id: '2', value: '4th sem NAD', accessType: 'P', owner: 'Manisha Sahu'},
+  //   {id: '3', value: '4th sem DCC', accessType: 'P', owner: 'Yashi Rathore'},
+  //   {id: '4', value: '4th sem DBMS', accessType: 'S', owner: 'Manisha Sahu'},
+  //   {id: '5', value: '3rd sem French', accessType: 'S', owner: 'Yashi Rathore'},
+  //   {id: '6', value: '3rd sem LA', accessType: 'S', owner: 'Manisha Sahu'},
+  // ];
   const numColumns = 2;
   const size = (Dimensions.get('window').width / numColumns) - 15;
   const [modalVisible, setModalVisible] = React.useState({
@@ -43,6 +46,7 @@ const LandingPage = (props) => {
     document: '',
     owner: '',
   });
+  const[data , setData] = React.useState([]);
   const styles = StyleSheet.create({
     itemContainer: {
       width: size,
@@ -67,22 +71,33 @@ const LandingPage = (props) => {
     },
   });
 const getData = () => {
-    setLoader(true);
     const param = '/document-list/';
     api
         .getApi(param)
         .then(res => {
-           setLoader(false);
            console.log(res);
            if(res.status === 200){
                res
                    .json()
                    .then(response => {
                        console.log("Data",response);
+                       let lists = response.private.concat(response.public); //joined 2 arrays
+                       setData(lists);
+                       console.log(data);
                    })
-                   .catch();
+                   .catch(error => {
+                       console.log(error);
+                   });
+           }
+           else{
+               console.log(res);
+               api.showToaster(res);
            }
         })
+        .catch(err => {
+            api.showToaster('Could Not Fetch Data');
+            console.log(err);
+        });
 };
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -119,9 +134,9 @@ const getData = () => {
                   marginRight: 'auto'
               }}
             onPress={() => {
-              if (item.accessType === 'P') {
+              if (item.document_access_type === 'private') {
                 setModalVisible({open: true, type: 'grant'});
-                setGrantAccessDetail({document: item.value, owner: item.owner});
+                setGrantAccessDetail({document: item.document_name, owner: item.owner});
               }
             }}>
             <View style={styles.itemContainer}>
@@ -145,14 +160,14 @@ const getData = () => {
                       fontSize: 16,
                     color: theme.colors.blue,
                   }}>
-                  {item.value}
+                  {item.document_name}
                 </Text>
                 <Text
                   style={{left: 5, fontSize: 12, color: theme.colors.black}}>
                   By:- {item.owner}
                 </Text>
                 <Icon
-                  name={item.accessType === 'P' ? 'lock' : 'eye'}
+                  name={item.document_access_type === 'private' ? 'lock' : 'eye'}
                   size={20}
                   style={{marginLeft: 'auto', marginRight: 10, bottom: 25}}
                   color={theme.colors.black}
@@ -202,7 +217,7 @@ const getData = () => {
         <ThreadComponent />
         <ImageComponent />
         {modalVisible.type === 'add' ? (
-          <AddDocumentModal />
+          <AddDocumentModal Close={() => {setModalVisible({open: false, type: ''})}} />
         ) : (
           <GrantAccessModal DocumentDetail={grantAccessDetail} />
         )}
