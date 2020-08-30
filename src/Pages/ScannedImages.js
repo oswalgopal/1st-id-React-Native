@@ -1,8 +1,6 @@
 import React from 'react';
 import {Image, View, ScrollView, TouchableOpacity, Text, Dimensions, Button} from "react-native";
 import RNImageToPdf from 'react-native-image-to-pdf';
-import {lightTheme} from "../Theme/lightTheme";
-import Pdf from "react-native-pdf";
 import Spinner from "react-native-loading-spinner-overlay";
 
 const ScannedImages = (props) => {
@@ -21,14 +19,15 @@ const ScannedImages = (props) => {
             const options = {
                 imagePaths:
                     temp,
-                name:  'Scanned Name',
+                name:  'Notespedia Document ',
         };
             // console.log(options);
             const pdf = await RNImageToPdf.createPDFbyImages(options);
             console.log(pdf);
             setPdfUrl(pdf.filePath);
             props.navigation.navigate('pdfViewer', {
-                pdfUrl: pdf.filePath
+                pdfUrl: pdf.filePath,
+                file: pdf
             });
             setLoader(false);
         } catch(e) {
@@ -36,6 +35,7 @@ const ScannedImages = (props) => {
             setLoader(false);
         }
     }
+
     return (
         <View style={{
             flex: 1
