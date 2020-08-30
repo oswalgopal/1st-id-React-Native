@@ -108,7 +108,7 @@ const AddDocumentModal = (props) => {
       />
       <InputComponent
         field={docname}
-        placeholder={'Enter Document Name'}
+        placeholder={'   Enter Document Name'}
         onChangeTextFunction={setDocname}
         secureTextEntry={false}
       />
@@ -122,14 +122,23 @@ const AddDocumentModal = (props) => {
           height: 40,
           alignItems: 'center',
           width: '70%',
-          color: theme.colors.black,
+          color: '#000',
           borderColor: theme.colors.blue,
           backgroundColor: theme.colors.white,
           borderRadius: 5,
           marginTop: 10,
           paddingLeft: 10,
+          justifyContent: "center"
       }}>
       <RNPickerSelect
+          style={{
+              placeholder: {
+                  color: '#000',
+              },
+              inputAndroid: {
+                  color: '#000'
+              }
+          }}
           value={year}
           placeholder={{label:'Year', color:'#000'}}
         items={[
@@ -173,8 +182,17 @@ const AddDocumentModal = (props) => {
             borderRadius: 5,
             marginTop: 10,
             paddingLeft: 10,
+            justifyContent: "center"
         }}>
             <RNPickerSelect
+                style={{
+                    placeholder: {
+                        color: '#000'
+                    },
+                    inputAndroid: {
+                        color: '#000'
+                    }
+                }}
                 value={semester}
                 onValueChange={(value) => {
                     setSemester(value);
@@ -241,7 +259,7 @@ const AddDocumentModal = (props) => {
       {/*/>*/}
       <InputComponent
         field={subject}
-        placeholder={'Subject'}
+        placeholder={'   Subject'}
         onChangeTextFunction={setSubject}
         secureTextEntry={false}
       />
@@ -261,9 +279,18 @@ const AddDocumentModal = (props) => {
             borderRadius: 5,
             marginTop: 10,
             paddingLeft: 10,
+            justifyContent: "center"
         }}>
             <RNPickerSelect
-                // value={access}
+                style={{
+                    placeholder: {
+                        color: '#000'
+                    },
+                    inputAndroid: {
+                        color: '#000'
+                    }
+                }}
+                value={access}
                 placeholder={{label:'Access Type', color:'#000'}}
                 items={[
                     {
