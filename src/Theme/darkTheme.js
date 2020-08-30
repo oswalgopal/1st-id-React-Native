@@ -5,6 +5,6 @@ colors:{
     ...DarkTheme.colors ,
     blue : '#E8E2E2' , //gray
     white: '#000' , //black
-    black : '#fff'  //white
+    black : '#fff',  //white,
 },
 };

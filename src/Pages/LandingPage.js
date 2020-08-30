@@ -100,7 +100,7 @@ const getData = () => {
         });
 };
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1, paddingBottom: 20}}>
       <SearchComponent />
       <TouchableOpacity style={{
           flexDirection: "row",
@@ -147,6 +147,9 @@ const getData = () => {
             backgroundColor: theme.colors.white,
             borderRadius: 3,
             elevation: 5,
+            paddingBottom: 10,
+            paddingTop: 10,
+            paddingLeft: 10
         }}>
         <Image
                   source={require('../images/pdf.png')}
@@ -159,12 +162,13 @@ const getData = () => {
                     fontWeight: 'bold',
                       fontSize: 16,
                     color: theme.colors.blue,
-                  }}>
+                      width: '85%'
+                  }} numberOfLines={1} ellipsizeMode={'tail'}>
                   {item.document_name}
                 </Text>
                 <Text
                   style={{left: 5, fontSize: 12, color: theme.colors.black}}>
-                  By:- {item.owner}
+                  By:- {item.document_ownerid.username}
                 </Text>
                 <Icon
                   name={item.document_access_type === 'private' ? 'lock' : 'eye'}

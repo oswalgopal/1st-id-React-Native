@@ -3,7 +3,9 @@ import Pdf from "react-native-pdf";
 import {View, Share, TouchableOpacity, Text} from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import S3 from "aws-sdk/clients/s3";
+import {Api} from "../Providers/api";
 const fs = require('react-native-fs');
+const api = new Api();
 const PdfVIewer = (props) => {
     const [uploadType, setUpload] = React.useState(false);
     const [s3docUrl, setS3DocUrl] = React.useState('');
@@ -33,6 +35,23 @@ const PdfVIewer = (props) => {
     };
     const upload = async uri => {
         console.log('upload function called');
+        let arrayBuffer;
+        const base64 = await fs.readFile(uri, 'base64').then(res => {
+            console.log('res', res);
+            arrayBuffer = _base64ToArrayBuffer(res);
+            console.log('arrayBuffer ', arrayBuffer);
+            console.log('base64 ', base64);
+            // const arrayBuffer = _base64ToArrayBuffer(base64);
+            // console.log('arrayBuffer ', arrayBuffer);
+            uploadFunction(arrayBuffer);
+        }).catch(error => {
+            console.log(error);
+            api.showToaster('couldnot upload the pdf to cloud');
+        });
+    }
+
+    const uploadFunction = (arrayBuffer) => {
+        console.log('upload started');
         const s3bucket = new S3({
             accessKeyId: 'AKIAYVYWOBA4MAHIQJGS',
             secretAccessKey:'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',
@@ -40,18 +59,15 @@ const PdfVIewer = (props) => {
             signatureVersion:'v4',
         });
         let contentDeposition = 'inline;filename="' + 'Notespedia ' + new Date().toLocaleString() + '"';
-        const base64 = await fs.readFile(uri, 'base64');
-        console.log('base64 ', base64);
-        const arrayBuffer = _base64ToArrayBuffer(base64);
         const params ={
             Bucket:'1staid',
             Key: 'Notespedia ' + new Date().toLocaleString(),
             Body: arrayBuffer,
             ContentDisposition: contentDeposition,
-            ContentType: file.type,
+            ContentType: 'application/pdf',
             ACL: 'public-read',
         }
-        await s3bucket.putObject(params, (err, data) => {
+        s3bucket.putObject(params, (err, data) => {
             if (err) {
                 console.log(err) ;
                 console.log('error in callback');
