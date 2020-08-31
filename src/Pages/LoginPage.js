@@ -31,14 +31,13 @@ const LoginPage = props => {
        .postApi(param)
        .then(res => {
            console.log(res);
-           setLoader(false);
            if(res.status === 200){
             res
               .json()
               .then(response =>{
                 console.log(response);
-                api  
-                .setAsyncData('loginData',JSON.stringify(res))
+                api
+                .setAsyncData('loginData',JSON.stringify(response))
                 .then(response =>{
                   console.log(response);
                   login();
@@ -48,7 +47,7 @@ const LoginPage = props => {
                   console.log(error);
                   api.showToaster(error);
               });
-           } 
+           }
            else {
                console.log(res);
                api.showToaster('Could Not Fetch Data Status:'+ res.status);
@@ -57,8 +56,8 @@ const LoginPage = props => {
           setLoader(false);
           api.showToaster('Login Failed Check your credentials');
           console.log(err);
-        });      
-       };  
+        });
+       };
     const sendOtp = () => {
         setLoader(true);
         const param = {
@@ -80,7 +79,7 @@ const LoginPage = props => {
                           props.navigation.navigate('forgotPassword',{otp:res2,email:username});
                       })
                       .catch(err2 => {
-                       console.log(err2);  
+                       console.log(err2);
                       });
                }
                else {
@@ -93,7 +92,7 @@ const LoginPage = props => {
                console.log(err);
                api.showToaster('Error while sending otp : 500');
            });
-    };   
+    };
     return (
         <SafeAreaView style={{
             flex:1,

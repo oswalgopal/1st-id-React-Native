@@ -18,6 +18,8 @@ const fs = require('react-native-fs');
 import DocumentPicker from 'react-native-document-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import S3 from 'aws-sdk/clients/s3';
+import {Api} from '../Providers/api';
+const api = new Api();
 const AddDocumentModal = (props) => {
   const theme = useTheme();
   const [docname, setDocname] = React.useState('');
@@ -79,7 +81,62 @@ const AddDocumentModal = (props) => {
       console.log('Response URL : ' + data);
     });
   };
-
+  var formData = new FormData();
+  formData.append('document_name', docname);
+  formData.append('document_url', url);
+  formData.append('document_year', year);
+  formData.append('document_semester', semester);
+  formData.append('document_access_type', access);
+    // api
+    //     .getAsyncData('loginData')
+    //     .then((res) => {
+    //         console.log("Get Async Response"+ JSON.stringify(res.user_id));
+    //         formData.append('document_ownerid',JSON.stringify(res.user_id));
+    //
+    //         // setId(JSON.stringify(res.user_id));
+    //         // console.log(id);
+    //     })
+    //     .catch((err) => {
+    //         console.log(err);
+    //     });
+  const addDocs = () => {
+    api
+      .getAsyncData('loginData')
+      .then((res) => {
+        console.log("Get Async Response"+ JSON.stringify(res.user_id));
+          formData.append('document_ownerid',JSON.stringify(res.user_id));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    const param = {
+      api: '/upload/',
+      data: formData,
+    };
+    api
+      .postFormDataApi(param)
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          res
+            .json()
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((error) => {
+              console.log(error);
+              api.showToaster(error);
+            });
+        } else {
+          console.log(res);
+          api.showToaster('Could Not Fetch Data Status:' + res.status);
+        }
+      })
+      .catch((err) => {
+        api.showToaster('Could not add document');
+        console.log(err);
+      });
+  };
   function _base64ToArrayBuffer(base64) {
     var binary_string = window.atob(base64);
     var len = binary_string.length;
@@ -118,7 +175,8 @@ const AddDocumentModal = (props) => {
       {/*    onChangeTextFunction={setYear}*/}
       {/*    secureTextEntry={false}*/}
       {/*/>*/}
-      <View style={{
+      <View
+        style={{
           height: 40,
           alignItems: 'center',
           width: '70%',
@@ -128,129 +186,129 @@ const AddDocumentModal = (props) => {
           borderRadius: 5,
           marginTop: 10,
           paddingLeft: 10,
-          justifyContent: "center"
-      }}>
-      <RNPickerSelect
+          justifyContent: 'center',
+        }}>
+        <RNPickerSelect
           style={{
-              placeholder: {
-                  color: '#000',
-              },
-              inputAndroid: {
-                  color: '#000'
-              }
+            placeholder: {
+              color: '#000',
+            },
+            inputAndroid: {
+              color: '#000',
+            },
           }}
           value={year}
-          placeholder={{label:'Year', color:'#000'}}
-        items={[
-        {
-            label: '1st Year',
-            value: '1st Year',
-        },
-        {
-            label: '2nd Year',
-            value: '2nd Year',
-        },
-        {
-            label: '3rd Year',
-            value: '3rd Year',
-        },
+          placeholder={{label: 'Year', color: '#000'}}
+          items={[
             {
-                label: '4th Year',
-                value: '4th Year',
+              label: '1st Year',
+              value: '1',
             },
             {
-                label: '5th Year',
-                value: '5th Year',
+              label: '2nd Year',
+              value: '2',
             },
             {
-                label: '6th Year',
-                value: '6th Year',
+              label: '3rd Year',
+              value: '3',
             },
-            ]}
-        onValueChange={(value) => {
-          setYear(value);
-        }}
-      />
+            {
+              label: '4th Year',
+              value: '4',
+            },
+            {
+              label: '5th Year',
+              value: '5',
+            },
+            {
+              label: '6th Year',
+              value: '6',
+            },
+          ]}
+          onValueChange={(value) => {
+            setYear(value);
+          }}
+        />
       </View>
-        <View style={{
-            height: 40,
-            alignItems: 'center',
-            width: '70%',
-            color: theme.colors.black,
-            borderColor: theme.colors.blue,
-            backgroundColor: theme.colors.white,
-            borderRadius: 5,
-            marginTop: 10,
-            paddingLeft: 10,
-            justifyContent: "center"
+      <View
+        style={{
+          height: 40,
+          alignItems: 'center',
+          width: '70%',
+          color: theme.colors.black,
+          borderColor: theme.colors.blue,
+          backgroundColor: theme.colors.white,
+          borderRadius: 5,
+          marginTop: 10,
+          paddingLeft: 10,
+          justifyContent: 'center',
         }}>
-            <RNPickerSelect
-                style={{
-                    placeholder: {
-                        color: '#000'
-                    },
-                    inputAndroid: {
-                        color: '#000'
-                    }
-                }}
-                value={semester}
-                onValueChange={(value) => {
-                    setSemester(value);
-                }}
-                placeholder={{label:'Semester', color:'#000'}}
-                items={[
-                    {
-                        label: 'Semester 1',
-                        value: 'Semester 1',
-                    },
-                    {
-                        label: 'Semester 2',
-                        value: 'Semester 2',
-                    },
-                    {
-                        label: 'Semester 3',
-                        value: 'Semester 3',
-                    },
-                    {
-                        label: 'Semester 4',
-                        value: 'Semester 4',
-                    },
-                    {
-                        label: 'Semester 5',
-                        value: 'Semester 5',
-                    },
-                    {
-                        label: 'Semester 6',
-                        value: 'Semester 6',
-                    },
-                    {
-                        label: 'Semester 7',
-                        value: 'Semester 7',
-                    },
-                    {
-                        label: 'Semester 8',
-                        value: 'Semester 8',
-                    },
-                    {
-                        label: 'Semester 9',
-                        value: 'Semester 9',
-                    },
-                    {
-                        label: 'Semester 10',
-                        value: 'Semester 10',
-                    },
-                    {
-                        label: 'Semester 11',
-                        value: 'Semester 11',
-                    },
-                    {
-                        label: 'Semester 12',
-                        value: 'Semester 12',
-                    },
-                ]}
-
-            />
-        </View>
+        <RNPickerSelect
+          style={{
+            placeholder: {
+              color: '#000',
+            },
+            inputAndroid: {
+              color: '#000',
+            },
+          }}
+          value={semester}
+          onValueChange={(value) => {
+            setSemester(value);
+          }}
+          placeholder={{label: 'Semester', color: '#000'}}
+          items={[
+            {
+              label: 'Semester 1',
+              value: '1',
+            },
+            {
+              label: 'Semester 2',
+              value: '2',
+            },
+            {
+              label: 'Semester 3',
+              value: '3',
+            },
+            {
+              label: 'Semester 4',
+              value: '4',
+            },
+            {
+              label: 'Semester 5',
+              value: '5',
+            },
+            {
+              label: 'Semester 6',
+              value: '6',
+            },
+            {
+              label: 'Semester 7',
+              value: '7',
+            },
+            {
+              label: 'Semester 8',
+              value: '8',
+            },
+            {
+              label: 'Semester 9',
+              value: '9',
+            },
+            {
+              label: 'Semester 10',
+              value: '10',
+            },
+            {
+              label: 'Semester 11',
+              value: '11',
+            },
+            {
+              label: 'Semester 12',
+              value: '12',
+            },
+          ]}
+        />
+      </View>
       {/*<InputComponent*/}
       {/*  field={semester}*/}
       {/*  placeholder={'Semester'}*/}
@@ -269,45 +327,46 @@ const AddDocumentModal = (props) => {
       {/*  onChangeTextFunction={setAccess}*/}
       {/*  secureTextEntry={false}*/}
       {/*/>*/}
-        <View style={{
-            height: 40,
-            alignItems: 'center',
-            width: '70%',
-            color: '#000',
-            // borderColor: theme.colors.blue,
-            backgroundColor: theme.colors.white,
-            borderRadius: 5,
-            marginTop: 10,
-            paddingLeft: 10,
-            justifyContent: "center"
+      <View
+        style={{
+          height: 40,
+          alignItems: 'center',
+          width: '70%',
+          color: '#000',
+          // borderColor: theme.colors.blue,
+          backgroundColor: theme.colors.white,
+          borderRadius: 5,
+          marginTop: 10,
+          paddingLeft: 10,
+          justifyContent: 'center',
         }}>
-            <RNPickerSelect
-                style={{
-                    placeholder: {
-                        color: '#000'
-                    },
-                    inputAndroid: {
-                        color: '#000'
-                    }
-                }}
-                value={access}
-                placeholder={{label:'Access Type', color:'#000'}}
-                items={[
-                    {
-                        label: 'Public',
-                        value: 'Public',
-                    },
-                    {
-                        label: 'Private',
-                        value: 'Private',
-                    }
-                ]}
-                onValueChange={(value) => {
-                    setAccess(value);
-                    console.log(value);
-                }}
-            />
-        </View>
+        <RNPickerSelect
+          style={{
+            placeholder: {
+              color: '#000',
+            },
+            inputAndroid: {
+              color: '#000',
+            },
+          }}
+          value={access}
+          placeholder={{label: 'Access Type', color: '#000'}}
+          items={[
+            {
+              label: 'Public',
+              value: 'public',
+            },
+            {
+              label: 'Private',
+              value: 'private',
+            },
+          ]}
+          onValueChange={(value) => {
+            setAccess(value);
+            console.log(value);
+          }}
+        />
+      </View>
       <TouchableOpacity onPress={pick}>
         <Image
           source={
@@ -352,6 +411,9 @@ const AddDocumentModal = (props) => {
             width: 100,
             height: 30,
             marginLeft: 5,
+          }}
+          onPress={() => {
+            addDocs();
           }}
         />
       </View>

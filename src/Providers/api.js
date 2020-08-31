@@ -60,6 +60,35 @@ export class Api {
         return err;
       });
   }
+  async postFormDataApi(param) {
+    console.log(param);
+    // let token = null;
+    var myHeaders = new Headers();
+    myHeaders.set('Accept', 'application/json');
+    myHeaders.set('Content-Type', 'application/json');
+    await this.getAsyncData('loginData')
+        .then(res => {
+          if (res) {
+            let token = res.auth_token;
+            myHeaders.set('Authorization', token);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    console.log(this.serverPath + param.api);
+    return fetch("serverPath:" + this.serverPath + param.api, {
+      method: 'POST',
+      headers: myHeaders,
+      body: param.data,
+    })
+        .then(res => {
+          return res;
+        })
+        .catch(err => {
+          return err;
+        });
+  }
   async deleteApi(param){
     // let token = null ;
     var myHeaders = new Headers();
