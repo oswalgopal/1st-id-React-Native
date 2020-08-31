@@ -19,6 +19,7 @@ import DocumentPicker from 'react-native-document-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import S3 from 'aws-sdk/clients/s3';
 import {Api} from '../Providers/api';
+import Spinner from "react-native-loading-spinner-overlay";
 const api = new Api();
 const AddDocumentModal = (props) => {
   const theme = useTheme();
@@ -28,6 +29,8 @@ const AddDocumentModal = (props) => {
   const [subject, setSubject] = React.useState('');
   const [access, setAccess] = React.useState('AccessType');
   const [url, setUrl] = React.useState('');
+  const [loader, setLoader] = React.useState(false);
+  const [docUrl, setDocUrl] = React.useState('');
   const pick = async () => {
     console.log('picker called');
     try {
@@ -54,6 +57,7 @@ const AddDocumentModal = (props) => {
     }
   };
   const upload = async (file) => {
+      setLoader(true);
     const s3bucket = new S3({
       accessKeyId: 'AKIAYVYWOBA4MAHIQJGS',
       secretAccessKey: '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',
@@ -77,16 +81,12 @@ const AddDocumentModal = (props) => {
         console.log(err);
         console.log('error in callback');
       }
+      setLoader(false);
       console.log('success');
-      console.log('Response URL : ' + data);
+        setDocUrl('document_url','https://1staid.s3.ap-south-1.amazonaws.com/' + file.name);
+        console.log('Response URL : ' + data);
     });
   };
-  var formData = new FormData();
-  formData.append('document_name', docname);
-  formData.append('document_url', url);
-  formData.append('document_year', year);
-  formData.append('document_semester', semester);
-  formData.append('document_access_type', access);
     // api
     //     .getAsyncData('loginData')
     //     .then((res) => {
@@ -100,11 +100,17 @@ const AddDocumentModal = (props) => {
     //         console.log(err);
     //     });
   const addDocs = () => {
+      var formData = new FormData();
+      formData.append('document_name', docname);
+      formData.append('document_url', docUrl);
+      formData.append('document_year', year);
+      formData.append('document_semester', semester);
+      formData.append('document_access_type', access);
     api
       .getAsyncData('loginData')
       .then((res) => {
         console.log("Get Async Response"+ JSON.stringify(res.user_id));
-          formData.append('document_ownerid',JSON.stringify(res.user_id));
+          formData.append('document_ownerid', JSON.stringify(res.user_id));
       })
       .catch((err) => {
         console.log(err);
@@ -113,11 +119,12 @@ const AddDocumentModal = (props) => {
       api: '/upload/',
       data: formData,
     };
+      console.log('param', param);
     api
       .postFormDataApi(param)
       .then((res) => {
-        console.log(res);
-        if (res.status === 200) {
+        console.log('res', res);
+        if (res.status === 201) {
           res
             .json()
             .then((response) => {
@@ -134,7 +141,7 @@ const AddDocumentModal = (props) => {
       })
       .catch((err) => {
         api.showToaster('Could not add document');
-        console.log(err);
+        console.log('err ', err);
       });
   };
   function _base64ToArrayBuffer(base64) {
@@ -156,6 +163,13 @@ const AddDocumentModal = (props) => {
         justifyContent: 'center',
         padding: 10,
       }}>
+        <Spinner
+            visible={loader}
+            textContent={'Uploading File ...'}
+            textStyle={{
+                color: '#fff'
+            }}
+        />
       <TextComponent
         text={'Add New Document'}
         color={theme.colors.white}

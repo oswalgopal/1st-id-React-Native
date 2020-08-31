@@ -1,17 +1,17 @@
 import React from 'react';
 import {
-  View,
-  ImageBackground,
-  TouchableHighlight,
-  SafeAreaView,
-  Dimensions,
-  StatusBar,
-  FlatList,
-  Image,
-  Text,
-  StyleSheet,
-  Modal,
-    TouchableOpacity
+    View,
+    ImageBackground,
+    TouchableHighlight,
+    SafeAreaView,
+    Dimensions,
+    StatusBar,
+    FlatList,
+    Image,
+    Text,
+    StyleSheet,
+    Modal,
+    TouchableOpacity, RefreshControl
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SearchComponent from '../Components/SearchComponent';
@@ -47,6 +47,7 @@ const LandingPage = (props) => {
     owner: '',
   });
   const[data , setData] = React.useState([]);
+  const[loader , setLoader] = React.useState(false);
   const styles = StyleSheet.create({
     itemContainer: {
       width: size,
@@ -71,11 +72,13 @@ const LandingPage = (props) => {
     },
   });
 const getData = () => {
+    setLoader(true);
     const param = '/document-list/';
     api
         .getApi(param)
         .then(res => {
            console.log(res);
+            setLoader(false);
            if(res.status === 200){
                res
                    .json()
@@ -95,6 +98,7 @@ const getData = () => {
            }
         })
         .catch(err => {
+            setLoader(false);
             api.showToaster('Could Not Fetch Data');
             console.log(err);
         });
@@ -126,6 +130,14 @@ const getData = () => {
           />
       </TouchableOpacity>
       <FlatList
+          refreshControl={
+              <RefreshControl
+                  refreshing={loader}
+                  onRefresh={() => {
+                      getData();
+                  }}
+              />
+          }
         data={data}
         renderItem={({item}) => (
           <TouchableOpacity

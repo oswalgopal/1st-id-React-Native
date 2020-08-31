@@ -64,8 +64,8 @@ export class Api {
     console.log(param);
     // let token = null;
     var myHeaders = new Headers();
-    myHeaders.set('Accept', 'application/json');
-    myHeaders.set('Content-Type', 'application/json');
+    // myHeaders.set('Accept', 'application/json');
+    // myHeaders.set('Content-Type', 'application/json');
     await this.getAsyncData('loginData')
         .then(res => {
           if (res) {
@@ -77,7 +77,8 @@ export class Api {
           console.log(err);
         })
     console.log(this.serverPath + param.api);
-    return fetch("serverPath:" + this.serverPath + param.api, {
+    console.log('data', param.data);
+    return fetch(this.serverPath + param.api, {
       method: 'POST',
       headers: myHeaders,
       body: param.data,
