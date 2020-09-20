@@ -1,17 +1,18 @@
 import React from 'react';
 import {
-    View,
-    ImageBackground,
-    TouchableHighlight,
-    SafeAreaView,
-    Dimensions,
-    StatusBar,
-    FlatList,
-    Image,
-    Text,
-    StyleSheet,
-    Modal,
-    TouchableOpacity, RefreshControl
+  View,
+  ImageBackground,
+  TouchableHighlight,
+  SafeAreaView,
+  Dimensions,
+  StatusBar,
+  FlatList,
+  Image,
+  Text,
+  StyleSheet,
+  Modal,
+  TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SearchComponent from '../Components/SearchComponent';
@@ -24,9 +25,9 @@ import {useTheme} from '@react-navigation/native';
 import {Api} from '../Providers/api';
 const api = new Api();
 const LandingPage = (props) => {
-    React.useEffect(() => {
-        getData();
-    }, []);
+  React.useEffect(() => {
+    getData();
+  }, []);
   const theme = useTheme();
   // const data = [
   //   {id: '1', value: '4th sem IT ACT', accessType: 'P', owner: 'Yashi Rathore'},
@@ -37,7 +38,7 @@ const LandingPage = (props) => {
   //   {id: '6', value: '3rd sem LA', accessType: 'S', owner: 'Manisha Sahu'},
   // ];
   const numColumns = 2;
-  const size = (Dimensions.get('window').width / numColumns) - 15;
+  const size = Dimensions.get('window').width / numColumns - 15;
   const [modalVisible, setModalVisible] = React.useState({
     open: false,
     type: '',
@@ -46,17 +47,17 @@ const LandingPage = (props) => {
     document: '',
     owner: '',
   });
-  const[data , setData] = React.useState([]);
-  const[loader , setLoader] = React.useState(false);
+  const [data, setData] = React.useState([]);
+  const [loader, setLoader] = React.useState(false);
   const styles = StyleSheet.create({
     itemContainer: {
       width: size,
       height: size * 1.25,
       padding: 0,
-        marginTop: 10,
-        shadowColor: theme.colors.blue,
-        shadowRadius: 2,
-        shadowOpacity: 0.2,
+      marginTop: 10,
+      shadowColor: theme.colors.blue,
+      shadowRadius: 2,
+      shadowOpacity: 0.2,
     },
     item: {
       flex: 1,
@@ -71,111 +72,123 @@ const LandingPage = (props) => {
       right: 20,
     },
   });
-const getData = () => {
+  const getData = () => {
     setLoader(true);
     const param = '/document-list/';
     api
-        .getApi(param)
-        .then(res => {
-           console.log(res);
-            setLoader(false);
-           if(res.status === 200){
-               res
-                   .json()
-                   .then(response => {
-                       console.log("Data",response);
-                       let lists = response.private.concat(response.public); //joined 2 arrays
-                       setData(lists);
-                       console.log(data);
-                   })
-                   .catch(error => {
-                       console.log(error);
-                   });
-           }
-           else{
-               console.log(res);
-               api.showToaster(res);
-           }
-        })
-        .catch(err => {
-            setLoader(false);
-            api.showToaster('Could Not Fetch Data');
-            console.log(err);
-        });
-};
+      .getApi(param)
+      .then((res) => {
+        console.log(res);
+        setLoader(false);
+        if (res.status === 200) {
+          res
+            .json()
+            .then((response) => {
+              console.log('Data', response);
+              let lists = response.private.concat(response.public); //joined 2 arrays
+              setData(lists);
+              console.log(data);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          console.log(res);
+          api.showToaster(res);
+        }
+      })
+      .catch((err) => {
+        setLoader(false);
+        api.showToaster('Could Not Fetch Data');
+        console.log(err);
+      });
+  };
   return (
     <SafeAreaView style={{flex: 1, paddingBottom: 20}}>
       <SearchComponent />
-      <TouchableOpacity style={{
-          flexDirection: "row",
-          alignItems: "center",
+      <TouchableOpacity
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
           marginRight: 10,
           marginTop: 10,
-          justifyContent: "flex-end"
-      }} onPress={() => {
-          alert('implement filter and sort')
-      }}>
-          <Text style={{
-              textAlign: "right",
+          justifyContent: 'flex-end',
+        }}
+        onPress={() => {
+          alert('implement filter and sort');
+        }}>
+        <Text
+          style={{
+            textAlign: 'right',
           }}>
-              Sort + filter
-          </Text>
-          <Icon
-              name="arrow-down"
-              size={20}
-              style={{
-                    marginLeft: 10,
-                  color: theme.colors.blue,
-              }}
-          />
+          Sort + filter
+        </Text>
+        <Icon
+          name="arrow-down"
+          size={20}
+          style={{
+            marginLeft: 10,
+            color: theme.colors.blue,
+          }}
+        />
       </TouchableOpacity>
       <FlatList
-          refreshControl={
-              <RefreshControl
-                  refreshing={loader}
-                  onRefresh={() => {
-                      getData();
-                  }}
-              />
-          }
+        refreshControl={
+          <RefreshControl
+            refreshing={loader}
+            onRefresh={() => {
+              getData();
+            }}
+          />
+        }
         data={data}
         renderItem={({item}) => (
           <TouchableOpacity
-              style={{
-                  marginLeft: 'auto',
-                  marginRight: 'auto'
-              }}
+            style={{
+              marginLeft: 'auto',
+              marginRight: 'auto',
+            }}
             onPress={() => {
               if (item.document_access_type === 'private') {
                 setModalVisible({open: true, type: 'grant'});
-                setGrantAccessDetail({document: item.document_name, owner: item.owner});
+                setGrantAccessDetail({
+                  document: item.document_name,
+                  owner: item.document_ownerid.username,
+                });
               }
             }}>
             <View style={styles.itemContainer}>
-
-        <View style={{
-            flex: 1,
-            margin: 3,
-            backgroundColor: theme.colors.white,
-            borderRadius: 3,
-            elevation: 5,
-            paddingBottom: 10,
-            paddingTop: 10,
-            paddingLeft: 10
-        }}>
-        <Image
+              <View
+                style={{
+                  flex: 1,
+                  margin: 3,
+                  backgroundColor: theme.colors.white,
+                  borderRadius: 3,
+                  elevation: 5,
+                  paddingBottom: 10,
+                  paddingTop: 10,
+                  paddingLeft: 10,
+                }}>
+                <Image
                   source={require('../images/pdf.png')}
-                  style={{width: '80%', height: '80%', marginRight: 'auto', marginLeft: 'auto'}}
+                  style={{
+                    width: '80%',
+                    height: '80%',
+                    marginRight: 'auto',
+                    marginLeft: 'auto',
+                  }}
                 />
                 <Text
                   style={{
                     marginLeft: 5,
                     marginTop: 10,
                     fontWeight: 'bold',
-                      fontSize: 16,
+                    fontSize: 16,
                     color: theme.colors.blue,
-                      width: '85%'
-                  }} numberOfLines={1} ellipsizeMode={'tail'}>
+                    width: '85%',
+                  }}
+                  numberOfLines={1}
+                  ellipsizeMode={'tail'}>
                   {item.document_name}
                 </Text>
                 <Text
@@ -183,7 +196,9 @@ const getData = () => {
                   By:- {item.document_ownerid.username}
                 </Text>
                 <Icon
-                  name={item.document_access_type === 'private' ? 'lock' : 'eye'}
+                  name={
+                    item.document_access_type === 'private' ? 'lock' : 'eye'
+                  }
                   size={20}
                   style={{marginLeft: 'auto', marginRight: 10, bottom: 25}}
                   color={theme.colors.black}
@@ -191,8 +206,7 @@ const getData = () => {
               </View>
             </View>
           </TouchableOpacity>
-
-      )}
+        )}
         keyExtractor={(item) => item.id}
         numColumns={numColumns}
       />
@@ -233,7 +247,11 @@ const getData = () => {
         <ThreadComponent />
         <ImageComponent />
         {modalVisible.type === 'add' ? (
-          <AddDocumentModal Close={() => {setModalVisible({open: false, type: ''})}} />
+          <AddDocumentModal
+            Close={() => {
+              setModalVisible({open: false, type: ''});
+            }}
+          />
         ) : (
           <GrantAccessModal DocumentDetail={grantAccessDetail} />
         )}
@@ -241,4 +259,4 @@ const getData = () => {
     </SafeAreaView>
   );
 };
-export default LandingPage ;
+export default LandingPage;
