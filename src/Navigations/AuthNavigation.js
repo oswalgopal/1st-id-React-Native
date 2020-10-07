@@ -5,95 +5,92 @@ import Notifications from '../Pages/Notifications';
 import MyDocument from '../Pages/MyDocument';
 import Header from '../Components/Header';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import {createDrawerNavigator} from '@react-navigation/drawer' ;
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import ProfilePage from '../Pages/ProfilePage';
 import DrawerComponent from '../Components/DrawerComponent';
-import ScanDocuments from "../Pages/ScanDocuments";
-import ScannedImages from "../Pages/ScannedImages";
-import {lightTheme} from "../Theme/lightTheme";
-import PdfVIewer from "../Pages/PdfVIewer";
+import ScanDocuments from '../Pages/ScanDocuments';
+import ScannedImages from '../Pages/ScannedImages';
+import {lightTheme} from '../Theme/lightTheme';
+import PdfVIewer from '../Pages/PdfVIewer';
 const Drawer = createDrawerNavigator();
-const Auth = createStackNavigator() ;
+const Auth = createStackNavigator();
 const AuthScreen = () => {
-return (
-     <Drawer.Navigator drawerContent={props => <DrawerComponent {...props} />}>
-            <Drawer.Screen name='landingPage' component={AuthNav} />
-     </Drawer.Navigator>
-);
+  return (
+    <Drawer.Navigator drawerContent={(props) => <DrawerComponent {...props} />}>
+      <Drawer.Screen name="landingPage" component={AuthNav} />
+    </Drawer.Navigator>
+  );
 };
 
-const AuthNav = () =>  (
-    <Auth.Navigator>
+const AuthNav = () => (
+  <Auth.Navigator>
     <Auth.Screen
-                    options={({navigation}) => ({
-                        header: () => <Header navigation={navigation} bellShown={true} />
-                    })}
-                    name="landingPage"
-                    component={LandingPage}
-                />
+      options={({navigation}) => ({
+        header: () => <Header navigation={navigation} bellShown={true} />,
+      })}
+      name="landingPage"
+      component={LandingPage}
+    />
     <Auth.Screen
-                    options={({navigation}) => ({
-                        header: () => <Header navigation={navigation} bellShown={false} />
-                    })}
-
-                    name="notifications"
-                    component={Notifications}
-                />
+      options={({navigation}) => ({
+        header: () => <Header navigation={navigation} bellShown={false} />,
+      })}
+      name="notifications"
+      component={Notifications}
+    />
     <Auth.Screen
-                    options={{headerShown: false }}
-                    name = "profilePage"
-                    component= {ProfilePage}
-                />
-        <Auth.Screen
-                        options={({navigation}) => ({
-                            header: () => <Header navigation={navigation} bellShown={false} />
-                        })}
-
-                        name="myDocument"
-                        component={MyDocument}
-                    />
-        <Auth.Screen
-            options={({navigation}) => ({
-                header: () => <Header navigation={navigation} bellShown={true} />
-            })}
-
-            name="scan"
-            component={ScanDocuments}
-        />
-        <Auth.Screen
-            options={({navigation}) => ({
-                headerStyle: {
-                    backgroundColor: lightTheme.colors.blue
-                },
-                headerTitleStyle: {
-                    color: lightTheme.colors.white
-                },
-                headerTitle: 'Scanned Images',
-                headerRightContainerStyle: {
-                    color: 'white'
-                },
-            })}
-            name="scanImages"
-            component={ScannedImages}
-        />
-        <Auth.Screen
-            options={({navigation}) => ({
-                headerStyle: {
-                    backgroundColor: lightTheme.colors.blue
-                },
-                headerTitleStyle: {
-                    color: lightTheme.colors.white
-                },
-                headerTitle: 'Pdf Viewer',
-                headerRightContainerStyle: {
-                    color: 'white'
-                },
-            })}
-            name="pdfViewer"
-            component={PdfVIewer}
-        />
-    </Auth.Navigator>
+      options={{headerShown: false}}
+      name="profilePage"
+      component={ProfilePage}
+    />
+    <Auth.Screen
+      options={({navigation}) => ({
+        header: () => <Header navigation={navigation} bellShown={false} />,
+      })}
+      name="myDocument"
+      component={MyDocument}
+    />
+    <Auth.Screen
+      options={({navigation}) => ({
+        header: () => <Header navigation={navigation} bellShown={true} />,
+      })}
+      name="scan"
+      component={ScanDocuments}
+    />
+    <Auth.Screen
+      options={({navigation}) => ({
+        headerStyle: {
+          backgroundColor: lightTheme.colors.blue,
+        },
+        headerTitleStyle: {
+          color: lightTheme.colors.white,
+        },
+        headerTitle: 'Scanned Images',
+        headerRightContainerStyle: {
+          color: 'white',
+        },
+      })}
+      name="scanImages"
+      component={ScannedImages}
+    />
+    <Auth.Screen
+      options={({navigation}) => ({
+        headerStyle: {
+          backgroundColor: lightTheme.colors.blue,
+        },
+        headerTitleStyle: {
+          color: lightTheme.colors.white,
+        },
+        headerTitle: 'Pdf Viewer',
+        headerRightContainerStyle: {
+          color: 'white',
+        },
+      })}
+      name="pdfViewer"
+      component={PdfVIewer}
+    />
+  </Auth.Navigator>
 );
-export default AuthScreen ;
+export default AuthScreen;

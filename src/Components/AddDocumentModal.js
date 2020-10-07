@@ -19,7 +19,7 @@ import DocumentPicker from 'react-native-document-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import S3 from 'aws-sdk/clients/s3';
 import {Api} from '../Providers/api';
-import Spinner from "react-native-loading-spinner-overlay";
+import Spinner from 'react-native-loading-spinner-overlay';
 const api = new Api();
 const AddDocumentModal = (props) => {
   const theme = useTheme();
@@ -57,7 +57,7 @@ const AddDocumentModal = (props) => {
     }
   };
   const upload = async (file) => {
-      setLoader(true);
+    setLoader(true);
     const s3bucket = new S3({
       accessKeyId: 'AKIAYVYWOBA4MAHIQJGS',
       secretAccessKey: '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',
@@ -83,34 +83,35 @@ const AddDocumentModal = (props) => {
       }
       setLoader(false);
       console.log('success');
-        setDocUrl('document_url','https://1staid.s3.ap-south-1.amazonaws.com/' + file.name);
-        console.log('Response URL : ' + data);
+      setDocUrl('https://1staid.s3.ap-south-1.amazonaws.com/' + file.name);
+      console.log('Response URL : ' + data);
     });
   };
-    // api
-    //     .getAsyncData('loginData')
-    //     .then((res) => {
-    //         console.log("Get Async Response"+ JSON.stringify(res.user_id));
-    //         formData.append('document_ownerid',JSON.stringify(res.user_id));
-    //
-    //         // setId(JSON.stringify(res.user_id));
-    //         // console.log(id);
-    //     })
-    //     .catch((err) => {
-    //         console.log(err);
-    //     });
+  // api
+  //     .getAsyncData('loginData')
+  //     .then((res) => {
+  //         console.log("Get Async Response"+ JSON.stringify(res.user_id));
+  //         formData.append('document_ownerid',JSON.stringify(res.user_id));
+  //
+  //         // setId(JSON.stringify(res.user_id));
+  //         // console.log(id);
+  //     })
+  //     .catch((err) => {
+  //         console.log(err);
+  //     });
   const addDocs = () => {
-      var formData = new FormData();
-      formData.append('document_name', docname);
-      formData.append('document_url', docUrl);
-      formData.append('document_year', year);
-      formData.append('document_semester', semester);
-      formData.append('document_access_type', access);
+    console.log('docUrl ', docUrl);
+    var formData = new FormData();
+    formData.append('document_name', docname);
+    formData.append('document_url', docUrl);
+    formData.append('document_year', year);
+    formData.append('document_semester', semester);
+    formData.append('document_access_type', access);
     api
       .getAsyncData('loginData')
       .then((res) => {
-        console.log("Get Async Response"+ JSON.stringify(res.user_id));
-          formData.append('document_ownerid', JSON.stringify(res.user_id));
+        console.log('Get Async Response' + JSON.stringify(res.user_id));
+        formData.append('document_ownerid', JSON.stringify(res.user_id));
       })
       .catch((err) => {
         console.log(err);
@@ -119,12 +120,23 @@ const AddDocumentModal = (props) => {
       api: '/upload/',
       data: formData,
     };
-      console.log('param', param);
+    console.log('param', param);
     api
       .postFormDataApi(param)
       .then((res) => {
         console.log('res', res);
         if (res.status === 201) {
+          res
+            .json()
+            .then((response) => {
+              console.log(response);
+              props.Close();
+            })
+            .catch((error) => {
+              console.log(error);
+              api.showToaster(error);
+            });
+        } else if (res.status === 400) {
           res
             .json()
             .then((response) => {
@@ -136,7 +148,7 @@ const AddDocumentModal = (props) => {
             });
         } else {
           console.log(res);
-          api.showToaster('Could Not Fetch Data Status:' + res.status);
+          api.showToaster('Could not add document Status:' + res.status);
         }
       })
       .catch((err) => {
@@ -163,13 +175,13 @@ const AddDocumentModal = (props) => {
         justifyContent: 'center',
         padding: 10,
       }}>
-        <Spinner
-            visible={loader}
-            textContent={'Uploading File ...'}
-            textStyle={{
-                color: '#fff'
-            }}
-        />
+      <Spinner
+        visible={loader}
+        textContent={'Uploading File ...'}
+        textStyle={{
+          color: '#fff',
+        }}
+      />
       <TextComponent
         text={'Add New Document'}
         color={theme.colors.white}

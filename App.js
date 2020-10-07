@@ -7,9 +7,9 @@ import {darkTheme} from './src/Theme/darkTheme';
 import {lightTheme} from './src/Theme/lightTheme';
 import {useEffect} from 'react';
 import {AuthContext} from './src/context/authContext';
-import {StatusBar} from 'react-native';
+import {StatusBar, Text, View} from 'react-native';
 import {Api} from './src/Providers/api';
-const  api = new Api();
+const api = new Api();
 const App = () => {
   const initialStateLoading = {
     isloading: true,
@@ -38,21 +38,20 @@ const App = () => {
   );
   useEffect(() => {
     setTimeout(() => {
-        api
-            .getAsyncData('loginData')
-            .then(res => {
-            if(res) {
-                console.log(res);
-                dispatch({type: 'LOGIN'});
-            }
-            else{
-                dispatch({type: 'LOGOUT'});
-            }
-            })
-            .catch(err => {
-                console.log(err);
-            });
-        }, 1000);
+      api
+        .getAsyncData('loginData')
+        .then((res) => {
+          if (res) {
+            console.log(res);
+            dispatch({type: 'LOGIN'});
+          } else {
+            dispatch({type: 'LOGOUT'});
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }, 1000);
   }, []);
   const authContext = React.useMemo(
     () => ({
@@ -70,6 +69,13 @@ const App = () => {
 
     [],
   );
+  if (loginState.isloading) {
+    return (
+      <View>
+        <Text>Loading Please wait</Text>
+      </View>
+    );
+  }
   return (
     <AuthContext.Provider value={authContext}>
       <StatusBar backgroundColor={lightTheme.colors.blue} />

@@ -23,20 +23,25 @@ import ImageComponent from '../Components/ImageComponent';
 import ThreadComponent from '../Components/ThreadComponent';
 import {useTheme} from '@react-navigation/native';
 import {Api} from '../Providers/api';
+import Pdf from 'react-native-pdf';
 const api = new Api();
 const LandingPage = (props) => {
   React.useEffect(() => {
+    api
+      .getAsyncData('loginData')
+      .then((res) => {
+        if (res) {
+          console.log(res);
+          setUserId(res.user_id);
+        } else {
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     getData();
   }, []);
   const theme = useTheme();
-  // const data = [
-  //   {id: '1', value: '4th sem IT ACT', accessType: 'P', owner: 'Yashi Rathore'},
-  //   {id: '2', value: '4th sem NAD', accessType: 'P', owner: 'Manisha Sahu'},
-  //   {id: '3', value: '4th sem DCC', accessType: 'P', owner: 'Yashi Rathore'},
-  //   {id: '4', value: '4th sem DBMS', accessType: 'S', owner: 'Manisha Sahu'},
-  //   {id: '5', value: '3rd sem French', accessType: 'S', owner: 'Yashi Rathore'},
-  //   {id: '6', value: '3rd sem LA', accessType: 'S', owner: 'Manisha Sahu'},
-  // ];
   const numColumns = 2;
   const size = Dimensions.get('window').width / numColumns - 15;
   const [modalVisible, setModalVisible] = React.useState({
@@ -48,6 +53,7 @@ const LandingPage = (props) => {
     owner: '',
   });
   const [data, setData] = React.useState([]);
+  const [user_id, setUserId] = React.useState([]);
   const [loader, setLoader] = React.useState(false);
   const styles = StyleSheet.create({
     itemContainer: {
@@ -155,6 +161,10 @@ const LandingPage = (props) => {
                   document: item.document_name,
                   owner: item.document_ownerid.username,
                 });
+              } else {
+                props.navigation.navigate('pdfViewer', {
+                  pdfUrl: item.document_url,
+                });
               }
             }}>
             <View style={styles.itemContainer}>
@@ -168,16 +178,39 @@ const LandingPage = (props) => {
                   paddingBottom: 10,
                   paddingTop: 10,
                   paddingLeft: 10,
+                  paddingRight: 10,
                 }}>
-                <Image
-                  source={require('../images/pdf.png')}
-                  style={{
-                    width: '80%',
-                    height: '80%',
-                    marginRight: 'auto',
-                    marginLeft: 'auto',
+                <Pdf
+                  page={0}
+                  source={{uri: item.document_url}}
+                  onLoadComplete={(numberOfPages, filePath) => {
+                    console.log(`number of pages: ${numberOfPages}`);
                   }}
+                  onPageChanged={(page, numberOfPages) => {
+                    console.log(`current page: ${page}`);
+                  }}
+                  onError={(error) => {
+                    console.log(error);
+                  }}
+                  onPressLink={(uri) => {
+                    console.log(`Link presse: ${uri}`);
+                  }}
+                  style={{
+                    width: '100%',
+                    height: '80%',
+                    // paddingBottom: 50,
+                  }}
+                  fitWidth={true}
                 />
+                {/*<Image*/}
+                {/*  source={require('../images/pdf.png')}*/}
+                {/*  style={{*/}
+                {/*    width: '80%',*/}
+                {/*    height: '80%',*/}
+                {/*    marginRight: 'auto',*/}
+                {/*    marginLeft: 'auto',*/}
+                {/*  }}*/}
+                {/*/>*/}
                 <Text
                   style={{
                     marginLeft: 5,
@@ -186,6 +219,7 @@ const LandingPage = (props) => {
                     fontSize: 16,
                     color: theme.colors.blue,
                     width: '85%',
+                    textTransform: 'capitalize',
                   }}
                   numberOfLines={1}
                   ellipsizeMode={'tail'}>
@@ -193,7 +227,10 @@ const LandingPage = (props) => {
                 </Text>
                 <Text
                   style={{left: 5, fontSize: 12, color: theme.colors.black}}>
-                  By:- {item.document_ownerid.username}
+                  By:-{' '}
+                  {item.document_ownerid.user_id === user_id
+                    ? 'You'
+                    : item.document_ownerid.username}
                 </Text>
                 <Icon
                   name={
@@ -249,11 +286,17 @@ const LandingPage = (props) => {
         {modalVisible.type === 'add' ? (
           <AddDocumentModal
             Close={() => {
+              getData();
               setModalVisible({open: false, type: ''});
             }}
           />
         ) : (
-          <GrantAccessModal DocumentDetail={grantAccessDetail} />
+          <GrantAccessModal
+            Close={() => {
+              setModalVisible({open: false, type: ''});
+            }}
+            DocumentDetail={grantAccessDetail}
+          />
         )}
       </Modal>
     </SafeAreaView>

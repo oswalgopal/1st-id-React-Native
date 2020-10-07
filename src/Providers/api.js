@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {Alert, Platform, ToastAndroid} from 'react-native';
 export class Api {
   serverPath = 'http://13.235.174.237';
-  // serverPath='http://ed79b417ed3b.ngrok.io';
+  // serverPath = 'http://127.0.0.1:8000';
   /**
    * function to call the get api
    * @param: url which we will be hitting the get api
