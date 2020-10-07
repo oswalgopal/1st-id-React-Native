@@ -8,46 +8,55 @@ import {
 } from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {Api} from '../Providers/api';
+import {useTheme} from '@react-navigation/native';
 const api = new Api();
 const SwipeToDelete = () => {
+  const theme = useTheme();
   React.useEffect(() => {
     myDocuments();
   }, []);
   const [docs, setDocs] = React.useState([]);
   const myDocuments = () => {
-    const param = '/document-detail/2';
+    let param = '';
     api
-      .getApi(param)
+      .getAsyncData('loginData')
       .then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          res
-            .json()
-            .then((response) => {
-              console.log('Response->', response);
-              let temp = [];
-              for (let i = 0; i < response.length; i++) {
-                temp.push(response[i]);
+        if (res) {
+          console.log(res);
+          param = '/document-detail/' + res.user_id;
+          api
+            .getApi(param)
+            .then((res) => {
+              console.log(res);
+              if (res.status === 200) {
+                res
+                  .json()
+                  .then((response) => {
+                    console.log('Response->', response);
+                    let temp = [];
+                    for (let i = 0; i < response.length; i++) {
+                      temp.push(response[i]);
+                    }
+                    setDocs(temp);
+                    console.log('Documents->', docs);
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              } else {
+                console.log(res);
               }
-              setDocs(temp);
-              console.log('Documents->', docs);
             })
-            .catch((error) => {
-              console.log(error);
+            .catch((err) => {
+              console.log(err);
             });
         } else {
-          console.log(res);
         }
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  // const [listData, setListData] = useState(
-  //     Array(20)
-  //         .fill('')
-  //         .map((_, i) => ({ key: `${i}`, text: `item #${i}` }))
-  // );
 
   const closeRow = (rowMap, rowKey) => {
     if (rowMap[rowKey]) {
@@ -64,23 +73,62 @@ const SwipeToDelete = () => {
   };
 
   const onRowDidOpen = (rowKey) => {
-    console.log('This row opened', rowKey);
+    // console.log('This row opened', rowKey);
   };
 
-  const renderItem = (docs) => (
-    <TouchableHighlight
-      onPress={() => console.log('You touched me')}
-      style={styles.rowFront}
-      underlayColor={'#AAA'}>
-      <View>
-        <Text>I am {docs.document_name} in a SwipeListView</Text>
-      </View>
-    </TouchableHighlight>
-  );
+  const renderItem = (docs) => {
+    console.log(docs);
+    return (
+      <TouchableHighlight
+        onPress={() => console.log('You touched me')}
+        style={styles.rowFront}
+        underlayColor={'#AAA'}>
+        <View
+          style={{
+            flexDirection: 'row',
+          }}>
+          <View
+            style={{
+              width: 50,
+              height: 50,
+              backgroundColor: theme.colors.blue,
+              borderRadius: 100,
+              marginHorizontal: 20,
+            }}
+          />
+          <View>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                textTransform: 'capitalize',
+              }}>
+              {docs.item.document_name}{' '}
+              <Text style={{fontSize: 12, fontWeight: 'normal'}}>
+                ({docs.item.document_access_type})
+              </Text>
+            </Text>
+            <Text
+              style={{
+                fontSize: 12,
+              }}>
+              {docs.item.document_semester} Sem {docs.item.document_year} Yr
+            </Text>
+            <Text
+              style={{
+                fontSize: 12,
+              }}>
+              {docs.item.create_date}
+            </Text>
+          </View>
+        </View>
+      </TouchableHighlight>
+    );
+  };
 
   const renderHiddenItem = (data, rowMap) => (
     <View style={styles.rowBack}>
-      <Text>Left</Text>
+      {/*<Text>Left</Text>*/}
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnLeft]}
         onPress={() => closeRow(rowMap, data.item.key)}>

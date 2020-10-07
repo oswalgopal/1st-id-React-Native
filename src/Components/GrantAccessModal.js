@@ -13,9 +13,53 @@ import InputComponent from '../Components/InputComponent';
 import ButtonComponent from '../Components/ButtonComponent';
 import {Button} from 'react-native-elements';
 import {useTheme} from '@react-navigation/native';
-
+import {Api} from '../Providers/api';
+const api = new Api();
 const GrantAccessModal = (props) => {
   const theme = useTheme();
+  const [loader2, setLoader2] = React.useState(false);
+  const [user_id, setUserId] = React.useState([]);
+  React.useEffect(() => {
+    api
+      .getAsyncData('loginData')
+      .then((res) => {
+        if (res) {
+          console.log(res);
+          setUserId(res.user_id);
+        } else {
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const wantAccess = () => {
+    setLoader2(true);
+    const param =
+      '/checkaccess/' + user_id + '/ ' + props.DocumentDetail.document_id + '/';
+    console.log(param);
+    api
+      .getApi(param)
+      .then((res) => {
+        setLoader2(false);
+        console.log(res);
+        if (res.status === 200) {
+          res.json().then((response) => {
+            console.log(response);
+          });
+        } else if (res.status === 400) {
+          res.json().then((response) => {
+
+          });
+        }
+      })
+      .catch((error) => {
+        setLoader2(false);
+        console.log(error);
+      });
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -81,6 +125,7 @@ const GrantAccessModal = (props) => {
           }}
         />
         <Button
+          loader={loader2}
           title="Grant"
           titleStyle={{
             color: theme.colors.black,
@@ -91,6 +136,7 @@ const GrantAccessModal = (props) => {
             height: 30,
             marginLeft: 5,
           }}
+          onPress={wantAccess}
         />
       </View>
     </SafeAreaView>

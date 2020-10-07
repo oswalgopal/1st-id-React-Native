@@ -51,10 +51,12 @@ const LandingPage = (props) => {
   const [grantAccessDetail, setGrantAccessDetail] = React.useState({
     document: '',
     owner: '',
+      document_id: ''
   });
   const [data, setData] = React.useState([]);
   const [user_id, setUserId] = React.useState([]);
   const [loader, setLoader] = React.useState(false);
+  const [loader2, setLoader2] = React.useState(false);
   const styles = StyleSheet.create({
     itemContainer: {
       width: size,
@@ -109,6 +111,39 @@ const LandingPage = (props) => {
         console.log(err);
       });
   };
+
+  const checkAssess = (item) => {
+    setLoader2(true);
+    const param = '/checkaccess/' + user_id + '/ ' + item.document_id + '/';
+    console.log(param);
+    api
+      .getApi(param)
+      .then((res) => {
+        setLoader2(false);
+        console.log(res);
+        if (res.status === 200) {
+          res.json().then((response) => {
+            console.log(response);
+          });
+        } else if (res.status === 400) {
+          res.json().then((response) => {
+            if (response === 'Sorry Access is not given') {
+              setModalVisible({open: true, type: 'grant'});
+              setGrantAccessDetail({
+                document: item.document_name,
+                owner: item.document_ownerid.username,
+                  document_id: item.document_id
+              });
+            }
+          });
+        }
+      })
+      .catch((error) => {
+        setLoader2(false);
+        console.log(error);
+      });
+  };
+
   return (
     <SafeAreaView style={{flex: 1, paddingBottom: 20}}>
       <SearchComponent />
@@ -156,11 +191,7 @@ const LandingPage = (props) => {
             }}
             onPress={() => {
               if (item.document_access_type === 'private') {
-                setModalVisible({open: true, type: 'grant'});
-                setGrantAccessDetail({
-                  document: item.document_name,
-                  owner: item.document_ownerid.username,
-                });
+                checkAssess(item);
               } else {
                 props.navigation.navigate('pdfViewer', {
                   pdfUrl: item.document_url,

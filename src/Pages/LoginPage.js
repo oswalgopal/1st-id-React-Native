@@ -38,8 +38,8 @@ const LoginPage = (props) => {
     api
       .postApi(param)
       .then((res) => {
-          setLoader(false);
-          console.log(res);
+        setLoader(false);
+        console.log(res);
         if (res.status === 200) {
           res
             .json()
@@ -63,6 +63,8 @@ const LoginPage = (props) => {
               console.log(response);
               if (response.non_field_errors) {
                 api.showToaster(response.non_field_errors[0]);
+              } else if (response.email) {
+                api.showToaster(response.email[0]);
               } else {
                 api.showToaster(response.non_field_errors[0]);
               }

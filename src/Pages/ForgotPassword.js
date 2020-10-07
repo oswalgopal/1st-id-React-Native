@@ -77,7 +77,7 @@ const ForgotPassword = (props) => {
       <DotComponent />
       <ThreadComponent />
       <TextComponent
-        text={'Forgot Password ?'}
+        text={'Forgot \n Password ?'}
         color={'#fff'}
         fontSize={45}
         fontWeight={'bold'}
