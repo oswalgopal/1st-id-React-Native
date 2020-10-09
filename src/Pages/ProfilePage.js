@@ -17,6 +17,7 @@ import ThreadComponent from '../Components/ThreadComponent';
 import {Avatar} from 'react-native-paper';
 import {useTheme} from '@react-navigation/native';
 import {Api} from '../Providers/api';
+import Spinner from 'react-native-loading-spinner-overlay';
 const api = new Api();
 const ProfilePage = (props) => {
   const theme = useTheme();
@@ -26,15 +27,18 @@ const ProfilePage = (props) => {
   const [about, setAbout] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [edit, setEdit] = React.useState(false);
-  React.useEffect(() => {
+    const [loader, setLoader] = React.useState(false);
+    React.useEffect(() => {
     getProfile();
   }, []);
   const getProfile = () => {
+      setLoader(true);
     const param = '/myprofile/2';
     api
       .getApi(param)
       .then((res) => {
         console.log(res);
+          setLoader(false);
         if (res.status === 200) {
           res
             .json()
@@ -55,6 +59,7 @@ const ProfilePage = (props) => {
       })
       .catch((err) => {
         console.log(err);
+        setLoader(false);
       });
   };
   const upgradeProfile = (item) => {
@@ -100,6 +105,13 @@ const ProfilePage = (props) => {
         justifyContent: 'center',
         padding: 0,
       }}>
+      <Spinner
+        visible={loader}
+        textContent={'Please wait ...'}
+        textStyle={{
+          color: '#fff',
+        }}
+      />
       <ImageComponent />
       {/* <DotComponent /> */}
       <ThreadComponent />

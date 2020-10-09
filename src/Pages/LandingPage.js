@@ -24,6 +24,7 @@ import ThreadComponent from '../Components/ThreadComponent';
 import {useTheme} from '@react-navigation/native';
 import {Api} from '../Providers/api';
 import Pdf from 'react-native-pdf';
+import Spinner from 'react-native-loading-spinner-overlay';
 const api = new Api();
 const LandingPage = (props) => {
   React.useEffect(() => {
@@ -51,7 +52,7 @@ const LandingPage = (props) => {
   const [grantAccessDetail, setGrantAccessDetail] = React.useState({
     document: '',
     owner: '',
-      document_id: ''
+    document_id: '',
   });
   const [data, setData] = React.useState([]);
   const [user_id, setUserId] = React.useState([]);
@@ -124,6 +125,18 @@ const LandingPage = (props) => {
         if (res.status === 200) {
           res.json().then((response) => {
             console.log(response);
+            if (response.exist) {
+              props.navigation.navigate('pdfViewer', {
+                pdfUrl: response.document_url,
+              });
+            } else {
+              setModalVisible({open: true, type: 'grant'});
+              setGrantAccessDetail({
+                document: item.document_name,
+                owner: item.document_ownerid.username,
+                document_id: item.document_id,
+              });
+            }
           });
         } else if (res.status === 400) {
           res.json().then((response) => {
@@ -132,7 +145,7 @@ const LandingPage = (props) => {
               setGrantAccessDetail({
                 document: item.document_name,
                 owner: item.document_ownerid.username,
-                  document_id: item.document_id
+                document_id: item.document_id,
               });
             }
           });
@@ -147,6 +160,13 @@ const LandingPage = (props) => {
   return (
     <SafeAreaView style={{flex: 1, paddingBottom: 20}}>
       <SearchComponent />
+      <Spinner
+        visible={loader2}
+        textContent={'Checking Access ...'}
+        textStyle={{
+          color: '#fff',
+        }}
+      />
       <TouchableOpacity
         style={{
           flexDirection: 'row',

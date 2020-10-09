@@ -37,7 +37,7 @@ const GrantAccessModal = (props) => {
   const wantAccess = () => {
     setLoader2(true);
     const param =
-      '/checkaccess/' + user_id + '/ ' + props.DocumentDetail.document_id + '/';
+      '/wantaccess/' + user_id + '/ ' + props.DocumentDetail.document_id + '/';
     console.log(param);
     api
       .getApi(param)
@@ -47,16 +47,32 @@ const GrantAccessModal = (props) => {
         if (res.status === 200) {
           res.json().then((response) => {
             console.log(response);
+            if (response === 'Sent Succsesfully') {
+              props.Close();
+              api.showToaster('Sent Succsesfully');
+            }
           });
         } else if (res.status === 400) {
           res.json().then((response) => {
-
+            console.log(response);
+            props.Close();
+            api.showToaster(
+              'Could Not ask access for this document please try later',
+            );
           });
+        } else {
+          api.showToaster(
+            'Could Not ask access for this document please try later',
+          );
         }
       })
       .catch((error) => {
         setLoader2(false);
         console.log(error);
+        props.Close();
+        api.showToaster(
+          'Could Not ask access for this document please try later',
+        );
       });
   };
 

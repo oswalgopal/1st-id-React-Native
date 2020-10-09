@@ -7,15 +7,63 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
+const api = new Api();
 import {useTheme} from '@react-navigation/native';
 import {SwipeListView} from 'react-native-swipe-list-view';
+import {Api} from '../Providers/api';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export default function SwipeList() {
-  const [listData, setListData] = useState(
-    Array(20)
-      .fill('')
-      .map((_, i) => ({key: `${i}`, text: `student ${i}`})),
-  );
+  const [listData, setListData] = useState([]);
+  const [loader, setLoader] = React.useState(false);
+  const [user_id, setUserId] = React.useState('');
+
+  React.useEffect(() => {
+    api
+      .getAsyncData('loginData')
+      .then((res) => {
+        if (res) {
+          console.log(res);
+          setUserId(res.user_id);
+          getNotification(res.user_id);
+        } else {
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const getNotification = (user_id) => {
+    setLoader(true);
+    const param = '/notifications/' + user_id;
+    console.log(param);
+    api
+      .getApi(param)
+      .then((res) => {
+        console.log(res);
+        setLoader(false);
+        if (res.status === 200) {
+          res
+            .json()
+            .then((response) => {
+              console.log('Data', response);
+              setListData(response);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          console.log(res);
+          api.showToaster('Could not fetch data ' + res.status);
+        }
+      })
+      .catch((err) => {
+        setLoader(false);
+        api.showToaster('Could Not Fetch Data');
+        console.log(err);
+      });
+  };
 
   const closeRow = (rowMap, rowKey) => {
     if (rowMap[rowKey]) {
@@ -56,8 +104,8 @@ export default function SwipeList() {
           color={theme.colors.blue}
           style={{left: 10, top: 10}}
         />
-        <Text style={{left: 80, bottom: 20}}>
-          {data.item.text} wants access to ..........{' '}
+        <Text style={{left: 80, bottom: 20, textTransform: 'capitalize'}}>
+          {data.item.notification_label}
         </Text>
       </View>
     </TouchableHighlight>
@@ -81,8 +129,37 @@ export default function SwipeList() {
     </View>
   );
 
+  const deleteNotification = (notification_id) => {
+    const param = 'deleteNotification/' + notification_id;
+    api
+      .deleteApi(param)
+      .then((res) => {
+        if (res.status === 200) {
+          res
+            .json()
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <View style={styles.container}>
+      <Spinner
+        visible={loader}
+        textContent={'Please wait ...'}
+        textStyle={{
+          color: '#fff',
+        }}
+      />
       <SwipeListView
         data={listData}
         renderItem={renderItem}

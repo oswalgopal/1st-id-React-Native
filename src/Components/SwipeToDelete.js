@@ -144,6 +144,17 @@ const SwipeToDelete = () => {
 
   return (
     <View style={styles.container}>
+      {docs.length === 0 ? (
+        <Text
+          style={{
+            flex: 1,
+            textAlign: 'center',
+            marginTop: 50,
+            fontSize: 18,
+          }}>
+          No Documents found
+        </Text>
+      ) : null}
       <SwipeListView
         data={docs}
         renderItem={renderItem}
